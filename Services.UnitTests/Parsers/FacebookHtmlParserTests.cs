@@ -1,5 +1,6 @@
 ﻿namespace Services.UnitTests.Parsers
 {
+    using Core.Interfaces;
     using Moq;
     using Services.Parsers;
     using System.IO.Abstractions;
@@ -7,7 +8,7 @@
     [TestClass]
     public class FacebookHtmlParserTests
     {
-        private FacebookHtmlParser classUnderTest;
+        private IMessageParser classUnderTest = new Mock<IMessageParser>().Object;
 
         [TestInitialize]
         public void TestInitialize()
