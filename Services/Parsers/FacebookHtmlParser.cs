@@ -5,6 +5,7 @@
     using Core.Models;
     using HtmlAgilityPack;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO.Abstractions;
     using System.Xml.Linq;
 
@@ -80,29 +81,51 @@
                 }
             }
 
-            message.MessageText = FindInnerText(contentNode);
+            this.FindInnerText(message, contentNode);
         }
 
-        private string FindInnerText(HtmlNode parentNode)
+        private void FindInnerText(Message message, HtmlNode parentNode)
         {
             if (parentNode.InnerText.HasValue())
             {
-                return parentNode.InnerText.Trim(); // TODO PRJ: Reactions are contained in the same root node. Test for them/exclude them? Find them separately?
+                this.GetMessageTextWithReactions(message, parentNode, parentNode.InnerText.Trim());
+                return;
             }
 
             foreach (var node in parentNode.ChildNodes)
             {
                 if (node.InnerText.HasValue())
                 {
-                    return node.InnerText.Trim();
+                    this.GetMessageTextWithReactions(message, node, node.InnerText.Trim());
+                    return;
                 }
                 else
                 {
-                    return FindInnerText(node);
+                    this.FindInnerText(message, node);
+                }
+            }
+        }
+
+        private void GetMessageTextWithReactions(Message message, HtmlNode nodeWithText, string text)
+        {
+            var reactionListNode = nodeWithText.SelectSingleNode("//ul[@class='_tqp']");
+            if (reactionListNode != null)
+            {
+                var reactionText = reactionListNode.InnerText.Trim();
+                if (text.Contains(reactionText))
+                {
+                    text = text.Substring(0, text.LastIndexOf(reactionText));
+                }
+
+                foreach (var reactionNode in reactionListNode.SelectNodes("//li"))
+                {
+                    var unicodeString = new StringInfo(reactionNode.InnerText.Trim());
+                    var reaction = new MessageReaction { Reaction = unicodeString.SubstringByTextElements(0, 1), Person = new Person { DisplayName = unicodeString.SubstringByTextElements(1) } };
+                    message.Reactions.Add(reaction);
                 }
             }
 
-            return string.Empty;
+            message.MessageText = text.Trim();
         }
     }
 }
