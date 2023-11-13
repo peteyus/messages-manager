@@ -7,7 +7,6 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO.Abstractions;
-    using System.Xml.Linq;
 
     public class FacebookHtmlParser : IMessageParser
     {
@@ -50,7 +49,8 @@
         {
             var messages = new List<Message>();
 
-            // TODO PRJ: Going to need to get configuration after we read the file probably. For now assume same format.
+            // TODO PRJ: Going to need to get configuration after we read the file probably.
+            // For now assume same format. Neeed to configure class names? or are these consistent?
             var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("div[@role='main']");
             var messageNodes = messageRootNode.Elements("div");
 
@@ -75,13 +75,10 @@
 
         private void PopulateMessageContent(Message message, HtmlNode contentNode)
         {
-            if (contentNode.InnerHtml.Contains("<img"))
+            var imageNodes = contentNode.Descendants("img");
+            foreach (var imageNode in imageNodes)
             {
-                var imageNodes = contentNode.SelectNodes("//img");
-                foreach (var imageNode in imageNodes)
-                {
-                    message.ImageUrls.Add(imageNode.Attributes["src"].Value); // TODO PRJ: Import images into data store? Or reference on disk?
-                }
+                message.ImageUrls.Add(imageNode.Attributes["src"].Value); // TODO PRJ: Import images into data store? Or reference on disk?
             }
 
             this.FindInnerText(message, contentNode);

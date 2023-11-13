@@ -307,6 +307,78 @@
                 Assert.AreEqual("😉", messages.Last().Reactions[0].Reaction, "Did not capture expected reaction.");
                 Assert.AreEqual("👍", messages.Last().Reactions[1].Reaction, "Did not capture expected reaction.");
             }
+
+            [TestMethod]
+            public void ParsesMultipleMessageWithMultipleImagesAndReactions()
+            {
+                // Arrange
+                var html = @"
+<div role=""main"">
+    <div class=""_2lej"">
+        <div class=""_2lek"">Jimbob MessageSender</div>
+        <div class=""_2let"">
+            <div>
+                <div />
+                <div></div>
+                <div>Here's my message content.</div>
+                <div><a href=""SomePath""><img src=""SomePath"" /></a></div>
+                <div><a href=""SomeOtherPath""><img src=""SomeOtherPath"" /></a></div>
+                <div></div>
+                <div>
+                    <ul class=""_tqp"">
+                        <li>👍Janebob MessageReceiver</li>
+                        <li>😉Jimbob MessageSender</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class=""_2lem"">Aug 19, 2021, 2:49 PM</div>
+    </div>
+    <div class=""_2lej"">
+        <div class=""_2lek"">Janebob MessageReceiver</div>
+        <div class=""_2let"">
+            <div>
+                <div />
+                <div></div>
+                <div>Here's my reply.</div>
+                <div><a href=""SomeOtherPath""><img src=""SomeOtherPath"" /></a></div>
+                <div><a href=""SomePath""><img src=""SomePath"" /></a></div>
+                <div></div>
+                <div>
+                    <ul class=""_tqp"">
+                        <li>😉Jimbob MessageSender</li>
+                        <li>👍Janebob MessageReceiver</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class=""_2lem"">Aug 19, 2021, 2:50 PM</div>
+    </div>
+</div>";
+
+                // Act
+                var messages = this.classUnderTest.ReadMessages(html);
+
+                // Assert
+                Assert.AreEqual(2, messages.Count(), "Should have detected two messages.");
+                Assert.AreEqual("Jimbob MessageSender", messages.First().Sender?.DisplayName, "Wrong name for sender.");
+                Assert.AreEqual(2, messages.First().Reactions.Count, "Wrong number of reaction.");
+                Assert.AreEqual("👍", messages.First().Reactions[0].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("😉", messages.First().Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual(2, messages.First().ImageUrls.Count, "Wrong number of images");
+                Assert.IsTrue(messages.First().ImageUrls[0].Equals("SomePath"), "Should have added the image source to the URLs.");
+                Assert.IsTrue(messages.First().ImageUrls[1].Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
+                Assert.AreEqual("Here's my message content.", messages.First().MessageText, "Wrong message text.");
+
+                Assert.AreEqual("Janebob MessageReceiver", messages.Last().Sender?.DisplayName, "Wrong name for second sender.");
+                Assert.AreEqual(2, messages.Last().Reactions.Count, "Wrong number of reaction.");
+                Assert.AreEqual("😉", messages.Last().Reactions[0].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", messages.Last().Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual(2, messages.Last().ImageUrls.Count, "Wrong number of images");
+                Assert.IsTrue(messages.Last().ImageUrls[0].Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
+                Assert.IsTrue(messages.Last().ImageUrls[1].Equals("SomePath"), "Should have added the image source to the URLs.");
+                Assert.AreEqual("Here's my reply.", messages.Last().MessageText, "Wrong message text.");
+            }
         }
     }
 }
