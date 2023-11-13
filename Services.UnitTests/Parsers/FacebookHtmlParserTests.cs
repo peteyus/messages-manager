@@ -379,6 +379,36 @@
                 Assert.IsTrue(messages.Last().ImageUrls[1].Equals("SomePath"), "Should have added the image source to the URLs.");
                 Assert.AreEqual("Here's my reply.", messages.Last().MessageText, "Wrong message text.");
             }
+
+            [TestMethod]
+            public void IgnoresDivTagsThatDoNotContainMessages()
+            {
+                // Arrange
+                var html = @"
+<div role=""main"">
+    <div></div>
+    <div></div>
+    <div class=""_2lej"">
+        <div class=""_2lek"">Jimbob MessageSender</div>
+        <div class=""_2let"">
+            <div>
+                <div />
+                <div></div>
+                <div>Here's my message content.</div>
+                <div></div>
+            </div>
+        </div>
+        <div class=""_2lem"">Aug 19, 2021, 2:49 PM</div>
+    </div>
+</div>";
+
+                // Act
+                var message = this.classUnderTest.ReadMessages(html).Single();
+
+                // Assert
+                Assert.IsNotNull(message);
+                Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
+            }
         }
     }
 }
