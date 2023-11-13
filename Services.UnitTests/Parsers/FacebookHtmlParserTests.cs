@@ -4,6 +4,7 @@
     using Moq;
     using Services.Parsers;
     using System.IO.Abstractions;
+    using System.Reflection;
 
     [TestClass]
     public class FacebookHtmlParserTests
@@ -13,11 +14,11 @@
         [TestInitialize]
         public void TestInitialize()
         {
-            this.classUnderTest = new FacebookHtmlParser(new Mock<IFileSystem>().Object);
+            this.classUnderTest = new FacebookHtmlParser();
         }
 
         [TestClass]
-        public class ReadMessages : FacebookHtmlParserTests
+        public class ReadMessagesTests : FacebookHtmlParserTests
         {
             [TestMethod]
             public void ReadsSimpleMessageSegment()
@@ -408,6 +409,29 @@
                 // Assert
                 Assert.IsNotNull(message);
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
+            }
+        }
+
+        [TestClass]
+
+        public class ReadMessagesFromFileTests : FacebookHtmlParserTests
+        {
+            // note to future me: Not really unit tests, more integration since we're dealing with real filesystem,
+            // but can't really mock it out of the HTML parser so we'll treat it as a unit.
+            [TestMethod]
+            public void ReadsInExpectedMessagesFromSmallFile()
+            {
+                // Arrange
+                var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Assert.IsNotNull(testDirectory);
+                var filePath = Path.Combine(testDirectory, "Parsers", "Instagram-html-sample.html");
+
+                // Act
+                var messages = this.classUnderTest.ReadMessagesFromFile(filePath);
+
+                // Assert
+                Assert.IsNotNull(messages);
+                Assert.AreEqual(11, messages.Count(), "Should have found 11 messages.");
             }
         }
     }

@@ -10,25 +10,11 @@
 
     public class FacebookHtmlParser : IMessageParser
     {
-        private readonly IFileSystem fileSystem;
-
-        public FacebookHtmlParser(IFileSystem fileSystem)
-        {
-            fileSystem.ThrowIfNull(nameof(fileSystem));
-
-            this.fileSystem = fileSystem;
-        }
-
         public IEnumerable<Message> ReadMessagesFromFile(string sourceFilePath, MessageParserConfiguration? options = null)
         {
-            if (!fileSystem.File.Exists(sourceFilePath))
-            {
-                throw new FileNotFoundException(Core.Strings.ErrorFileNotFound.FormatCurrentCulture(sourceFilePath));
-            }
-
             var htmlDoc = new HtmlDocument();
             htmlDoc.Load(sourceFilePath);// TODO PRJ: Test here? tighten the try? Submethod for this logic?
-            var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("div[@role='main']");
+            var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@role='main']");
             if (messageRootNode == null)
             {
                 throw new Exception(Core.Strings.ErrorRootNodeNotFound.FormatCurrentCulture(sourceFilePath));
@@ -51,7 +37,7 @@
 
             // TODO PRJ: Going to need to get configuration after we read the file probably.
             // For now assume same format. Neeed to configure class names? or are these consistent?
-            var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("div[@role='main']");
+            var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@role='main']");
             var messageNodes = messageRootNode.Elements("div").Where(node => node.Attributes.AttributesWithName("class").Any(attr => attr.Value.Contains("_2lej")));
 
             foreach (HtmlNode node in messageNodes)
