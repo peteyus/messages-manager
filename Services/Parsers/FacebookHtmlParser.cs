@@ -52,17 +52,20 @@
 
             // TODO PRJ: Going to need to get configuration after we read the file probably. For now assume same format.
             var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("div[@role='main']");
+            var messageNodes = messageRootNode.Elements("div");
 
-            foreach (HtmlNode node in messageRootNode.SelectNodes("/div"))
+            foreach (HtmlNode node in messageNodes)
             {
+                var divs = node.Elements("div");
+
                 var message = new Message();
-                var personNode = node.SelectSingleNode("//div[@class='_2lek']");
+                var personNode = divs.First(node => node.Attributes["class"].Value.Contains("_2lek"));
                 message.Sender = new Person { DisplayName = personNode.InnerText }; // TODO PRJ: some sort of person lookup/matching here, eventually. New service.
 
-                var timestampNode = node.SelectSingleNode("//div[@class='_2lem']");
+                var timestampNode = divs.First(node => node.Attributes["class"].Value.Contains("_2lem"));
                 message.Timestamp = DateTime.Parse(timestampNode.InnerText);
 
-                var contentNode = node.SelectSingleNode("//div[@class='_2let']");
+                var contentNode = divs.First(node => node.Attributes["class"].Value.Contains("_2let"));
                 this.PopulateMessageContent(message, contentNode);
                 messages.Add(message);
             }
@@ -108,7 +111,7 @@
 
         private void GetMessageTextWithReactions(Message message, HtmlNode nodeWithText, string text)
         {
-            var reactionListNode = nodeWithText.SelectSingleNode("//ul[@class='_tqp']");
+            var reactionListNode = nodeWithText.Descendants("ul").FirstOrDefault();
             if (reactionListNode != null)
             {
                 var reactionText = reactionListNode.InnerText.Trim();
@@ -117,7 +120,8 @@
                     text = text.Substring(0, text.LastIndexOf(reactionText));
                 }
 
-                foreach (var reactionNode in reactionListNode.SelectNodes("//li"))
+                var childNodes = reactionListNode.Elements("li");
+                foreach (var reactionNode in childNodes)
                 {
                     var unicodeString = new StringInfo(reactionNode.InnerText.Trim());
                     var reaction = new MessageReaction { Reaction = unicodeString.SubstringByTextElements(0, 1), Person = new Person { DisplayName = unicodeString.SubstringByTextElements(1) } };
