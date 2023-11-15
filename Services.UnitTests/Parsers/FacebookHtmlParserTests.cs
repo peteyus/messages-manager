@@ -1,9 +1,11 @@
 ﻿namespace Services.UnitTests.Parsers
 {
     using Core.Interfaces;
+    using Core.Models;
+    using Core.Models.Equality;
     using Moq;
     using Services.Parsers;
-    using System.IO.Abstractions;
+    using System.Globalization;
     using System.Reflection;
 
     [TestClass]
@@ -424,7 +426,7 @@
             // note to future me: Not really unit tests, more integration since we're dealing with real filesystem,
             // but can't really mock it out of the HTML parser so we'll treat it as a unit.
             [TestMethod]
-            public void ReadsInExpectedMessagesFromSmallFile()
+            public void ReadsExpectedNumberOfMessagesFromExternalFile()
             {
                 // Arrange
                 var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -437,6 +439,117 @@
                 // Assert
                 Assert.IsNotNull(messages);
                 Assert.AreEqual(11, messages.Count(), "Should have found 11 messages.");
+            }
+
+            [TestMethod]
+            public void CheckMessageContentOfExternalMessages()
+            {
+                // Arrange
+                var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Assert.IsNotNull(testDirectory);
+                var filePath = Path.Combine(testDirectory, "Parsers", "Instagram-html-sample.html");
+
+                var expectedMessages = new List<Message>();
+                expectedMessages.Add(new Message
+                {
+                    MessageText = "Yeah it is :)",
+                    Sender = new Person { DisplayName = "Receiving Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Sep 20, 2019, 6:28 AM", CultureInfo.InvariantCulture))
+                });
+                expectedMessages.Add(new Message
+                {
+                    MessageText = "This is totally us.",
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Sep 19, 2019, 8:46 AM", CultureInfo.InvariantCulture))
+                });
+                expectedMessages.Add(new Message
+                {
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Sep 19, 2019, 8:46 AM", CultureInfo.InvariantCulture)),
+                    Share = new Share
+                    {
+                        ShareText = "🌙⭐️ #catanacomics",
+                        OriginalContentOwner = "catanacomics",
+                        Url = "https://www.instagram.com/p/B08xGZ7gI1U/"
+                    }
+                });
+                expectedMessages.Add(new Message
+                {
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Jul 24, 2019, 1:27 PM", CultureInfo.InvariantCulture)),
+                    Share = new Share
+                    {
+                        ShareText = "This 12-year-old makes teddy bears IV covers to make hospitals less scary for kids. They plan to deliver 500 teddy bear IV covers to hospitals across the country by this fall- free of charge 🐻",
+                        OriginalContentOwner = "nowthisnews",
+                        Url = "https://www.instagram.com/p/B0Qi2TenfaX/"
+                    }
+                });
+                expectedMessages.Add(new Message
+                {
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Jun 3, 2019, 10:44 AM", CultureInfo.InvariantCulture)),
+                    Share = new Share
+                    {
+                        ShareText = "A hulk, white canary, zoom, groot, and scarlet witch have been hidden somewhere here. You guys know the drill, first 10ish to find them will get a shoutout on my story, and the rest will be awarded with eternal respect. Comment when you find them and don’t spoil it for others, enjoy :) .\n.\n.\n.\n.\n.\n.\n.\n.\n.\n. \n#dcshows #cwshows #karadanvers #karazorel #melissabenoist #supergirl #oliverqueen #stephenamell #arrow #barryallen #grantgustin #theflash #saralance #caitylotz #whitecanary #legendsoftomorrow #supercrossover #felicitysmoak #johndiggle #raypalmer #theaqueen #olicity #caitlinsnow #ciscoramon #iriswest #jeffersonjackson",
+                        OriginalContentOwner = "arrowsmultiverse",
+                        Url = "https://www.instagram.com/p/BxNhkqAD6i4/"
+                    }
+                });
+                expectedMessages.Add(new Message
+                {
+                    MessageText = "Not that one! Lol. It's the memories one. But that ones good too!",
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 1:55 PM", CultureInfo.InvariantCulture))
+                });
+                expectedMessages.Add(new Message
+                {
+                    MessageText = "Lol that's super cute",
+                    Sender = new Person { DisplayName = "Receiving Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 1:52 PM", CultureInfo.InvariantCulture))
+                });
+                expectedMessages.Add(new Message
+                {
+                    MessageText = "I want this!",
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 11:36 AM", CultureInfo.InvariantCulture))
+                });
+                expectedMessages.Add(new Message
+                {
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 11:36 AM", CultureInfo.InvariantCulture)),
+                    Share = new Share
+                    {
+                        ShareText = "Ready for Mother's day? We have some fun projects mom would love! Or even a gift certificate! Stop by today!",
+                        OriginalContentOwner = "heartfeltwallhangings",
+                        Url = "https://www.instagram.com/p/BxLHErGnJcN/"
+                    }
+                });
+                expectedMessages.Add(new Message
+                {
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Mar 27, 2019, 7:24 PM", CultureInfo.InvariantCulture))
+                });
+                expectedMessages.Add(new Message
+                {
+                    Sender = new Person { DisplayName = "Other Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Mar 27, 2019, 7:22 PM", CultureInfo.InvariantCulture)),
+                    Share = new Share
+                    {
+                        ShareText = "Our mightiest Super Heroes assemble in the @LEGOMarvelGame Collection, available now! Relive all three #LEGOMarvel games in this action-packed adventure. #ad",
+                        OriginalContentOwner = "marvel",
+                        Url = "https://www.instagram.com/p/Bvgz2g0Fknj/"
+                    }
+                });
+
+                // Act
+                var messages = this.classUnderTest.ReadMessagesFromFile(filePath);
+
+                // Assert
+                Assert.IsNotNull(messages);
+                foreach(var message in expectedMessages)
+                {
+                    Assert.IsTrue(messages.Contains(message, new MessageEqualityComparer()), $"Did not find message {message}");
+                }
             }
         }
     }

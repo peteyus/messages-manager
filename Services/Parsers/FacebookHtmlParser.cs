@@ -8,6 +8,7 @@
     using System.Globalization;
     using System.IO.Abstractions;
     using System.Text.RegularExpressions;
+    using System.Web;
 
     public class FacebookHtmlParser : IMessageParser
     {
@@ -185,11 +186,18 @@
                 throw new Exception("Message already has text. I need to decide how to handle this.");
             }
 
-            message.MessageText = textNode.InnerText;
-            message.MessageHtml = textNode.InnerHtml;
-            foreach (var linkNode in textNode.Elements("a"))
+            if (textNode.InnerText.HasValue())
             {
-                this.ProcessLink(message, linkNode);
+                message.MessageText = HttpUtility.HtmlDecode(textNode.InnerText);
+            }
+
+            if (textNode.InnerHtml.HasValue())
+            {
+                message.MessageHtml = textNode.InnerHtml;
+                foreach (var linkNode in textNode.Elements("a"))
+                {
+                    this.ProcessLink(message, linkNode);
+                }
             }
         }
 
@@ -206,7 +214,26 @@
 
         private void ProcessSharedContent(Message message, HtmlNode sharedContentNode)
         {
+            var childDivs = sharedContentNode.Elements("div");
+            var share = new Share();
+            var linkNode = sharedContentNode.Descendants("a").First();
+            switch (childDivs.Count())
+            {
+                case 3:
+                    share.ShareText = HttpUtility.HtmlDecode(childDivs.ElementAt(0).InnerText);
+                    share.OriginalContentOwner = childDivs.ElementAt(1).InnerText;
+                    share.Url = linkNode.GetAttributeValue("href", "");
+                    break;
+                case 2:
+                    share.OriginalContentOwner = childDivs.ElementAt(0).InnerText;
+                    share.Url = linkNode.GetAttributeValue("href", "");
+                    break;
+                default:
+                    share.Url = linkNode.GetAttributeValue("href", "");
+                    break;
+            }
 
+            message.Share = share;
         }
     }
 }

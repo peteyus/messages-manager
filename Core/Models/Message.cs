@@ -21,5 +21,10 @@
         public IList<Uri> Links { get; set; }
         public Share? Share { get; set; }
         public IList<MessageReaction> Reactions { get; }
+
+        public override string ToString()
+        {
+            return $"Message, Sender {this.Sender?.DisplayName ?? "[empty]"} at Timestamp {this.Timestamp}.";
+        }
     }
 }
