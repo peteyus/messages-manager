@@ -30,6 +30,7 @@
         <div class=""_2lek"">Jimbob MessageSender</div>
         <div class=""_2let"">
             <div>
+                <div></div>
                 <div>Here's my message content.</div>
             </div>
         </div>
@@ -58,8 +59,8 @@
         <div class=""_2let"">
             <div>
                 <div />
-                <div></div>
                 <div>Here's my message content.</div>
+                <div></div>
                 <div></div>
             </div>
         </div>
@@ -88,6 +89,8 @@
         <div class=""_2let"">
             <div>
                 <div />
+                <div></div>
+                <div></div>
                 <div></div>
                 <div><a href=""SomePath""><img src=""SomePath"" /></a></div>
                 <div></div>
@@ -118,6 +121,8 @@
         <div class=""_2let"">
             <div>
                 <div />
+                <div></div>
+                <div></div>
                 <div></div>
                 <div><a href=""SomePath""><img src=""SomePath"" /></a></div>
                 <div><a href=""SomeOtherPath""><img src=""SomeOtherPath"" /></a></div>
@@ -150,8 +155,8 @@
         <div class=""_2let"">
             <div>
                 <div />
-                <div></div>
                 <div>Here's my message content.</div>
+                <div></div>
                 <div></div>
                 <div>
                     <ul class=""_tqp"">
@@ -221,8 +226,8 @@
         <div class=""_2let"">
             <div>
                 <div />
-                <div></div>
                 <div>Here's my message content.</div>
+                <div></div>
                 <div></div>
                 <div>
                     <ul class=""_tqp"">
@@ -320,11 +325,11 @@
         <div class=""_2let"">
             <div>
                 <div />
-                <div></div>
                 <div>Here's my message content.</div>
+                <div></div>
+                <div></div>
                 <div><a href=""http://SomeUrl/""><img src=""SomePath"" /></a></div>
                 <div><a href=""http://SomeOtherUrl/""><img src=""SomeOtherPath"" /></a></div>
-                <div></div>
                 <div>
                     <ul class=""_tqp"">
                         <li>👍Janebob MessageReceiver</li>
@@ -340,11 +345,11 @@
         <div class=""_2let"">
             <div>
                 <div />
-                <div></div>
                 <div>Here's my reply.</div>
+                <div></div>
+                <div></div>
                 <div><a href=""http://SomeOtherUrl/""><img src=""SomeOtherPath"" /></a></div>
                 <div><a href=""http://SomeUrl/""><img src=""SomePath"" /></a></div>
-                <div></div>
                 <div>
                     <ul class=""_tqp"">
                         <li>😉Jimbob MessageSender</li>

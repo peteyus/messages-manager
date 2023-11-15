@@ -61,61 +61,82 @@
             return messages;
         }
 
-        private void PopulateMessageContentRecursive(Message message, HtmlNode contentNode)
+        private void PopulateMessageContent(Message message, HtmlNode contentNode)
         {
-            foreach (var node in contentNode.ChildNodes.Where(node => node.NodeType == HtmlNodeType.Element))
+            /*
+             * Structure:
+             * <div class="_2lej"> <!-- contentNode -->
+             *   <div> <!-- calling this contentDiv -->
+             *     <div></div> <!-- always blank? -->
+             *     <div>Text content goes here.</div>
+             *     <div>Link, if any in content, OR nested shared object</div>
+             *     <div>Always blank</div>
+             *     <div>Images, Audio, or reactions. May not be present</div>
+             *     <div>Reactions, if images or audio</div>
+             *   </div>
+             * </div>
+             * 
+             * Nested Shared Object format:
+             * <div class="_2lej"> <!-- contentNode -->
+             *   <div> <!-- contentDiv -->
+             *     <div></div> <!-- still always blank -->
+             *     <div></div> <!-- I think I've seen message content with shared content? But not often? -->
+             *     <div>
+             *       <div>
+             *         <div>Shared content text</div>
+             *         <div>Shared content owner</div>
+             *         <div>Shared content link</div>
+             *       </div>
+             *     </div>
+             *     <div></div> <!-- still always blank -->
+             *     <div>Reactions, if any</div>
+             *   </div>
+             * </div>
+             */
+            var contentDiv = contentNode.Element("div");
+            var children = contentDiv.Elements("div");
+            for (int i = 0; i < children.Count(); i++)
             {
-                this.DetectContentAndPopulateMessage(message, node, 0);
-            }
-        }
-
-        private void DetectContentAndPopulateMessage(Message message, HtmlNode node, int depth)
-        {
-            var childElements = node.ChildNodes.Where(node => node.NodeType == HtmlNodeType.Element);
-            if (childElements.Any(node => node.Name == "div"))
-            {
-                foreach (var childNode in node.Elements("div"))
+                switch (i)
                 {
-                    this.DetectContentAndPopulateMessage(message, childNode, depth + 1);
-                }
-            }
-
-            foreach (var child in childElements.Where(node => node.Name != "div"))
-            {
-                switch (child.Name)
-                {
-                    case "img":
-                        this.ProcessImage(message, child);
+                    case 0:
+                    case 3:
                         break;
-                    case "audio":
-                        this.ProcessAudio(message, child);
+                    case 1:
+                        this.ProcessText(message, children.ElementAt(i));
                         break;
-                    case "a":
-                        if (child.InnerText == node.InnerText && !node.Elements("img").Any())
+                    case 2:
+                        var linkNode = children.ElementAt(i);
+                        if (linkNode.Elements("div").Any())
                         {
-                            this.ProcessLink(message, child);
-                        }
-                        else if (node.Elements("img").Any())
-                        {
-                            foreach (var imageNode in node.Elements("img"))
-                            {
-                                this.ProcessImage(message, imageNode);
-                            }
+                            this.ProcessSharedContent(message, linkNode.Element("div"));
                         }
                         else
                         {
-                            this.ProcessText(message, child);
+                            foreach (var link in linkNode.Elements("a"))
+                            {
+                                this.ProcessLink(message, linkNode);
+                            }
                         }
                         break;
                     default:
-                        this.ProcessText(message, child);
+                        var mediaNode = children.ElementAt(i);
+                        foreach (var imageNode in mediaNode.Descendants("img"))
+                        {
+                            this.ProcessImage(message, imageNode);
+                        }
+
+                        foreach (var audioNode in mediaNode.Descendants("audio"))
+                        {
+                            this.ProcessAudio(message, audioNode);
+                        }
+
+                        foreach (var reactionNode in mediaNode.Descendants("ul"))
+                        {
+                            this.ProcessReactions(message, reactionNode);
+                        }
                         break;
                 }
-            }
-
-            if (node.InnerText.HasValue())
-            {
-                this.ProcessText(message, node);
             }
         }
 
@@ -164,53 +185,28 @@
                 throw new Exception("Message already has text. I need to decide how to handle this.");
             }
 
-            this.FindInnerText(message, textNode);
-        }
-
-
-        private void FindInnerText(Message message, HtmlNode parentNode)
-        {
-            if (parentNode.InnerText.HasValue())
+            message.MessageText = textNode.InnerText;
+            message.MessageHtml = textNode.InnerHtml;
+            foreach (var linkNode in textNode.Elements("a"))
             {
-                this.GetMessageTextWithReactions(message, parentNode, parentNode.InnerText.Trim());
-                return;
-            }
-
-            foreach (var node in parentNode.ChildNodes)
-            {
-                if (node.InnerText.HasValue())
-                {
-                    this.GetMessageTextWithReactions(message, node, node.InnerText.Trim());
-                    return;
-                }
-                else
-                {
-                    this.FindInnerText(message, node);
-                }
+                this.ProcessLink(message, linkNode);
             }
         }
 
-        private void GetMessageTextWithReactions(Message message, HtmlNode nodeWithText, string text)
+        private void ProcessReactions(Message message, HtmlNode reactionsNode)
         {
-            var reactionListNode = nodeWithText.Descendants("ul").FirstOrDefault();
-            if (reactionListNode != null)
+            var childNodes = reactionsNode.Elements("li");
+            foreach (var reactionNode in childNodes)
             {
-                var reactionText = reactionListNode.InnerText.Trim();
-                if (text.Contains(reactionText))
-                {
-                    text = text.Substring(0, text.LastIndexOf(reactionText));
-                }
-
-                var childNodes = reactionListNode.Elements("li");
-                foreach (var reactionNode in childNodes)
-                {
-                    var unicodeString = new StringInfo(reactionNode.InnerText.Trim());
-                    var reaction = new MessageReaction { Reaction = unicodeString.SubstringByTextElements(0, 1), Person = new Person { DisplayName = unicodeString.SubstringByTextElements(1) } };
-                    message.Reactions.Add(reaction);
-                }
+                var unicodeString = new StringInfo(reactionNode.InnerText.Trim());
+                var reaction = new MessageReaction { Reaction = unicodeString.SubstringByTextElements(0, 1), Person = new Person { DisplayName = unicodeString.SubstringByTextElements(1) } };
+                message.Reactions.Add(reaction);
             }
+        }
 
-            message.MessageText = text.Trim();
+        private void ProcessSharedContent(Message message, HtmlNode sharedContentNode)
+        {
+
         }
     }
 }
