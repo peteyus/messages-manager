@@ -5,14 +5,17 @@
         public Message()
         {
             this.Reactions = new List<MessageReaction>();
-            this.ImageUrls = new List<string>();
+            this.Images = new List<Photo>();
+            this.Audio = new List<Audio>();
         }
 
-        public string? MessageText { get; set; } // TODO PRJ: How is unicode/emoji handled? Different type than string? Just at the display layer?
-        public IList<string> ImageUrls { get; set; }
-        public DateTime Timestamp { get; set; }
-        public IList<MessageReaction> Reactions { get; }
-        public Person? Sender { get; set; }
+        // TODO PRJ: Enum? Want to be able to differentiate
         public string? Source { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
+        public Person? Sender { get; set; }
+        public string? MessageText { get; set; }
+        public IList<Photo> Images { get; set; }
+        public IList<Audio> Audio { get; set; }
+        public IList<MessageReaction> Reactions { get; }
     }
 }

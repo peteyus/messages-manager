@@ -103,8 +103,8 @@
                 // Assert
                 Assert.IsNotNull(message);
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
-                Assert.IsTrue(message.ImageUrls.Contains("SomePath"), "Should have added the image source to the URLs.");
-                Assert.AreEqual(1, message.ImageUrls.Count, "Should only have identified a single image node.");
+                Assert.IsTrue(message.Images.Any(img => img.ImageUrl == "SomePath"), "Should have added the image source to the URLs.");
+                Assert.AreEqual(1, message.Images.Count, "Should only have identified a single image node.");
             }
 
             [TestMethod]
@@ -134,9 +134,9 @@
                 // Assert
                 Assert.IsNotNull(message);
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
-                Assert.IsTrue(message.ImageUrls.Contains("SomePath"), "Should have added the image source to the URLs.");
-                Assert.IsTrue(message.ImageUrls.Contains("SomeOtherPath"), "Should have added the image source to the URLs.");
-                Assert.AreEqual(2, message.ImageUrls.Count, "Should have found both images.");
+                Assert.IsTrue(message.Images.Any(img => img.ImageUrl == "SomePath"), "Should have added the image source to the URLs.");
+                Assert.IsTrue(message.Images.Any(img => img.ImageUrl == "SomeOtherPath"), "Should have added the image source to the URLs.");
+                Assert.AreEqual(2, message.Images.Count, "Should have found both images.");
             }
 
             [TestMethod]
@@ -366,18 +366,18 @@
                 Assert.AreEqual(2, messages.First().Reactions.Count, "Wrong number of reaction.");
                 Assert.AreEqual("👍", messages.First().Reactions[0].Reaction, "Did not capture expected reaction.");
                 Assert.AreEqual("😉", messages.First().Reactions[1].Reaction, "Did not capture expected reaction.");
-                Assert.AreEqual(2, messages.First().ImageUrls.Count, "Wrong number of images");
-                Assert.IsTrue(messages.First().ImageUrls[0].Equals("SomePath"), "Should have added the image source to the URLs.");
-                Assert.IsTrue(messages.First().ImageUrls[1].Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
+                Assert.AreEqual(2, messages.First().Images.Count, "Wrong number of images");
+                Assert.IsTrue(messages.First().Images[0]?.ImageUrl?.Equals("SomePath"), "Should have added the image source to the URLs.");
+                Assert.IsTrue(messages.First().Images[1]?.ImageUrl?.Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
                 Assert.AreEqual("Here's my message content.", messages.First().MessageText, "Wrong message text.");
 
                 Assert.AreEqual("Janebob MessageReceiver", messages.Last().Sender?.DisplayName, "Wrong name for second sender.");
                 Assert.AreEqual(2, messages.Last().Reactions.Count, "Wrong number of reaction.");
                 Assert.AreEqual("😉", messages.Last().Reactions[0].Reaction, "Did not capture expected reaction.");
                 Assert.AreEqual("👍", messages.Last().Reactions[1].Reaction, "Did not capture expected reaction.");
-                Assert.AreEqual(2, messages.Last().ImageUrls.Count, "Wrong number of images");
-                Assert.IsTrue(messages.Last().ImageUrls[0].Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
-                Assert.IsTrue(messages.Last().ImageUrls[1].Equals("SomePath"), "Should have added the image source to the URLs.");
+                Assert.AreEqual(2, messages.Last().Images.Count, "Wrong number of images");
+                Assert.IsTrue(messages.Last().Images[0]?.ImageUrl?.Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
+                Assert.IsTrue(messages.Last().Images[1]?.ImageUrl?.Equals("SomePath"), "Should have added the image source to the URLs.");
                 Assert.AreEqual("Here's my reply.", messages.Last().MessageText, "Wrong message text.");
             }
 

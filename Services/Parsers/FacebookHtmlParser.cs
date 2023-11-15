@@ -64,7 +64,7 @@
             var imageNodes = contentNode.Descendants("img");
             foreach (var imageNode in imageNodes)
             {
-                message.ImageUrls.Add(imageNode.Attributes["src"].Value); // TODO PRJ: Import images into data store? Or reference on disk?
+                message.Images.Add(new Photo { ImageUrl = imageNode.Attributes["src"].Value }); // TODO PRJ: Import images into data store? Or reference on disk?
             }
 
             this.FindInnerText(message, contentNode);
