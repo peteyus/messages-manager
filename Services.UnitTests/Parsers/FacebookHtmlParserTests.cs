@@ -322,8 +322,8 @@
                 <div />
                 <div></div>
                 <div>Here's my message content.</div>
-                <div><a href=""SomePath""><img src=""SomePath"" /></a></div>
-                <div><a href=""SomeOtherPath""><img src=""SomeOtherPath"" /></a></div>
+                <div><a href=""http://SomeUrl/""><img src=""SomePath"" /></a></div>
+                <div><a href=""http://SomeOtherUrl/""><img src=""SomeOtherPath"" /></a></div>
                 <div></div>
                 <div>
                     <ul class=""_tqp"">
@@ -342,8 +342,8 @@
                 <div />
                 <div></div>
                 <div>Here's my reply.</div>
-                <div><a href=""SomeOtherPath""><img src=""SomeOtherPath"" /></a></div>
-                <div><a href=""SomePath""><img src=""SomePath"" /></a></div>
+                <div><a href=""http://SomeOtherUrl/""><img src=""SomeOtherPath"" /></a></div>
+                <div><a href=""http://SomeUrl/""><img src=""SomePath"" /></a></div>
                 <div></div>
                 <div>
                     <ul class=""_tqp"">

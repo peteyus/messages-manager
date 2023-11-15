@@ -7,6 +7,7 @@
             this.Reactions = new List<MessageReaction>();
             this.Images = new List<Photo>();
             this.Audio = new List<Audio>();
+            this.Links = new List<Uri>();
         }
 
         // TODO PRJ: Enum? Want to be able to differentiate
@@ -16,6 +17,8 @@
         public string? MessageText { get; set; }
         public IList<Photo> Images { get; set; }
         public IList<Audio> Audio { get; set; }
+        public IList<Uri> Links { get; set; }
+        public Share? Share { get; set; }
         public IList<MessageReaction> Reactions { get; }
     }
 }
