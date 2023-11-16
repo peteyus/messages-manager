@@ -121,6 +121,9 @@
     <value>Error, file '{0}' not found.</value>
     <comment>Required param: Filepath</comment>
   </data>
+  <data name="ErrorNoMessageNodeFound" xml:space="preserve">
+    <value>No message node found matching the given configuration.</value>
+  </data>
   <data name="ErrorRootNodeNotFound" xml:space="preserve">
     <value>Could not find "main" message node in HTML file at path '{0}'.</value>
     <comment>Required param: Filepath</comment>

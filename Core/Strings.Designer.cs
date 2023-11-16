@@ -70,6 +70,15 @@ namespace Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No message node found matching the given configuration..
+        /// </summary>
+        public static string ErrorNoMessageNodeFound {
+            get {
+                return ResourceManager.GetString("ErrorNoMessageNodeFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find &quot;main&quot; message node in HTML file at path &apos;{0}&apos;..
         /// </summary>
         public static string ErrorRootNodeNotFound {

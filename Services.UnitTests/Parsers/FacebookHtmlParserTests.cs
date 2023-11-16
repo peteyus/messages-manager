@@ -12,11 +12,16 @@
     public class FacebookHtmlParserTests
     {
         protected IMessageParser classUnderTest = new Mock<IMessageParser>().Object;
+        protected MetaHtmlParserConfiguration testconfiguration = new MetaHtmlParserConfiguration();
 
         [TestInitialize]
         public void TestInitialize()
         {
             this.classUnderTest = new FacebookHtmlParser();
+            this.testconfiguration.MessageHeaderIdentifer = "_2lej";
+            this.testconfiguration.SenderNodeIdentifier = "_2lek";
+            this.testconfiguration.TimestampNodeIdentifier = "_2lem";
+            this.testconfiguration.ContentNodeIdentifier = "_2let";
         }
 
         [TestClass]
@@ -41,7 +46,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -71,7 +76,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -103,7 +108,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -136,7 +141,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -172,7 +177,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -206,7 +211,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -244,7 +249,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -301,7 +306,7 @@
 </div>";
 
                 // Act
-                var messages = this.classUnderTest.ReadMessages(html);
+                var messages = this.classUnderTest.ReadMessages(html, this.testconfiguration);
 
                 // Assert
                 Assert.AreEqual(2, messages.Count(), "Should have detected two messages.");
@@ -365,7 +370,7 @@
 </div>";
 
                 // Act
-                var messages = this.classUnderTest.ReadMessages(html);
+                var messages = this.classUnderTest.ReadMessages(html, this.testconfiguration);
 
                 // Assert
                 Assert.AreEqual(2, messages.Count(), "Should have detected two messages.");
@@ -411,7 +416,7 @@
 </div>";
 
                 // Act
-                var message = this.classUnderTest.ReadMessages(html).Single();
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
 
                 // Assert
                 Assert.IsNotNull(message);
@@ -434,7 +439,7 @@
                 var filePath = Path.Combine(testDirectory, "Parsers", "Instagram-html-sample.html");
 
                 // Act
-                var messages = this.classUnderTest.ReadMessagesFromFile(filePath);
+                var messages = this.classUnderTest.ReadMessagesFromFile(filePath, this.testconfiguration);
 
                 // Assert
                 Assert.IsNotNull(messages);
@@ -544,7 +549,7 @@
                 };
 
                 // Act
-                var messages = this.classUnderTest.ReadMessagesFromFile(filePath);
+                var messages = this.classUnderTest.ReadMessagesFromFile(filePath, this.testconfiguration);
 
                 // Assert
                 Assert.IsNotNull(messages);

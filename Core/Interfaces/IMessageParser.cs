@@ -7,5 +7,7 @@
         public IEnumerable<Message> ReadMessagesFromFile(string sourceFilePath, MessageParserConfiguration? options = null); // TODO PRJ: Source? Always assume file? Config object?
 
         public IEnumerable<Message> ReadMessages(string messageContent, MessageParserConfiguration? options = null);
+
+        public MessageSample ConfigureParsingAndReturnSample(string sourceFilePath, MessageParserConfiguration? options = null);
     }
 }
