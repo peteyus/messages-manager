@@ -14,6 +14,7 @@
             propertiesMatch &= x.Timestamp == y.Timestamp;
             propertiesMatch &= Equals(x.Sender, y.Sender);
             propertiesMatch &= Equals(x.Share, y.Share);
+            propertiesMatch &= Equals(x.Source, y.Source);
 
             return propertiesMatch;
         }
@@ -55,6 +56,7 @@
                 hashCode = (hashCode * 317) ^ (obj.Sender is null ? 0 : GetHashCode(obj.Sender));
                 hashCode = (hashCode * 317) ^ (obj.Timestamp.GetHashCode());
                 hashCode = (hashCode * 317) ^ (obj.Share is null ? 0 : GetHashCode(obj.Share));
+                hashCode = (hashCode * 317) ^ (obj.Source?.GetHashCode() ?? 0);
 
                 return hashCode;
             }

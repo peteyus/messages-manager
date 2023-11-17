@@ -423,10 +423,22 @@
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
             }
         }
+    }
+
+    [TestClass]
+    public class InstagramHtmlParserTests
+    {
+        protected IMessageParser classUnderTest = new Mock<IMessageParser>().Object;
+        protected MetaHtmlParserConfiguration testconfiguration = new MetaHtmlParserConfiguration();
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.classUnderTest = new InstagramHtmlParser();
+        }
 
         [TestClass]
-
-        public class ReadMessagesFromFileTests : FacebookHtmlParserTests
+        public class ReadMessagesFromFileTests : InstagramHtmlParserTests
         {
             // note to future me: Not really unit tests, more integration since we're dealing with real filesystem,
             // but can't really mock it out of the HTML parser so we'll treat it as a unit.
@@ -460,13 +472,15 @@
                     {
                         MessageText = "Yeah it is :)",
                         Sender = new Person { DisplayName = "Receiving Person" },
-                        Timestamp = new DateTimeOffset(DateTime.Parse("Sep 20, 2019, 6:28 AM", CultureInfo.InvariantCulture))
+                        Timestamp = new DateTimeOffset(DateTime.Parse("Sep 20, 2019, 6:28 AM", CultureInfo.InvariantCulture)),
+                        Source = "Instagram"
                     },
                     new Message
                     {
                         MessageText = "This is totally us.",
                         Sender = new Person { DisplayName = "Other Person" },
-                        Timestamp = new DateTimeOffset(DateTime.Parse("Sep 19, 2019, 8:46 AM", CultureInfo.InvariantCulture))
+                        Timestamp = new DateTimeOffset(DateTime.Parse("Sep 19, 2019, 8:46 AM", CultureInfo.InvariantCulture)),
+                        Source = "Instagram"
                     },
                     new Message
                     {
@@ -477,7 +491,8 @@
                             ShareText = "🌙⭐️ #catanacomics",
                             OriginalContentOwner = "catanacomics",
                             Url = "https://www.instagram.com/p/B08xGZ7gI1U/"
-                        }
+                        },
+                        Source = "Instagram"
                     },
                     new Message
                     {
@@ -488,7 +503,8 @@
                             ShareText = "This 12-year-old makes teddy bears IV covers to make hospitals less scary for kids. They plan to deliver 500 teddy bear IV covers to hospitals across the country by this fall- free of charge 🐻",
                             OriginalContentOwner = "nowthisnews",
                             Url = "https://www.instagram.com/p/B0Qi2TenfaX/"
-                        }
+                        },
+                        Source = "Instagram"
                     },
                     new Message
                     {
@@ -499,25 +515,29 @@
                             ShareText = "A hulk, white canary, zoom, groot, and scarlet witch have been hidden somewhere here. You guys know the drill, first 10ish to find them will get a shoutout on my story, and the rest will be awarded with eternal respect. Comment when you find them and don’t spoil it for others, enjoy :) .\n.\n.\n.\n.\n.\n.\n.\n.\n.\n. \n#dcshows #cwshows #karadanvers #karazorel #melissabenoist #supergirl #oliverqueen #stephenamell #arrow #barryallen #grantgustin #theflash #saralance #caitylotz #whitecanary #legendsoftomorrow #supercrossover #felicitysmoak #johndiggle #raypalmer #theaqueen #olicity #caitlinsnow #ciscoramon #iriswest #jeffersonjackson",
                             OriginalContentOwner = "arrowsmultiverse",
                             Url = "https://www.instagram.com/p/BxNhkqAD6i4/"
-                        }
+                        },
+                        Source = "Instagram"
                     },
                     new Message
                     {
                         MessageText = "Not that one! Lol. It's the memories one. But that ones good too!",
                         Sender = new Person { DisplayName = "Other Person" },
-                        Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 1:55 PM", CultureInfo.InvariantCulture))
+                        Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 1:55 PM", CultureInfo.InvariantCulture)),
+                        Source = "Instagram"
                     },
                     new Message
                     {
                         MessageText = "Lol that's super cute",
                         Sender = new Person { DisplayName = "Receiving Person" },
-                        Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 1:52 PM", CultureInfo.InvariantCulture))
+                        Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 1:52 PM", CultureInfo.InvariantCulture)),
+                        Source = "Instagram"
                     },
                     new Message
                     {
                         MessageText = "I want this!",
                         Sender = new Person { DisplayName = "Other Person" },
-                        Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 11:36 AM", CultureInfo.InvariantCulture))
+                        Timestamp = new DateTimeOffset(DateTime.Parse("May 8, 2019, 11:36 AM", CultureInfo.InvariantCulture)),
+                        Source = "Instagram"
                     },
                     new Message
                     {
@@ -528,12 +548,14 @@
                             ShareText = "Ready for Mother's day? We have some fun projects mom would love! Or even a gift certificate! Stop by today!",
                             OriginalContentOwner = "heartfeltwallhangings",
                             Url = "https://www.instagram.com/p/BxLHErGnJcN/"
-                        }
+                        },
+                        Source = "Instagram"
                     },
                     new Message
                     {
                         Sender = new Person { DisplayName = "Other Person" },
-                        Timestamp = new DateTimeOffset(DateTime.Parse("Mar 27, 2019, 7:24 PM", CultureInfo.InvariantCulture))
+                        Timestamp = new DateTimeOffset(DateTime.Parse("Mar 27, 2019, 7:24 PM", CultureInfo.InvariantCulture)),
+                        Source = "Instagram"
                     },
                     new Message
                     {
@@ -544,7 +566,8 @@
                             ShareText = "Our mightiest Super Heroes assemble in the @LEGOMarvelGame Collection, available now! Relive all three #LEGOMarvel games in this action-packed adventure. #ad",
                             OriginalContentOwner = "marvel",
                             Url = "https://www.instagram.com/p/Bvgz2g0Fknj/"
-                        }
+                        },
+                        Source = "Instagram"
                     }
                 };
 
@@ -553,7 +576,7 @@
 
                 // Assert
                 Assert.IsNotNull(messages);
-                foreach(var message in expectedMessages)
+                foreach (var message in expectedMessages)
                 {
                     Assert.IsTrue(messages.Contains(message, new MessageEqualityComparer()), $"Did not find message {message}");
                 }
