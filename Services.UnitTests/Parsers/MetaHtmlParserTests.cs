@@ -435,6 +435,11 @@
         public void TestInitialize()
         {
             this.classUnderTest = new InstagramHtmlParser();
+
+            this.testconfiguration.MessageHeaderIdentifer = "_2lej";
+            this.testconfiguration.SenderNodeIdentifier = "_2lek";
+            this.testconfiguration.TimestampNodeIdentifier = "_2lem";
+            this.testconfiguration.ContentNodeIdentifier = "_2let";
         }
 
         [TestClass]
@@ -580,6 +585,36 @@
                 {
                     Assert.IsTrue(messages.Contains(message, new MessageEqualityComparer()), $"Did not find message {message}");
                 }
+            }
+        }
+
+        [TestClass]
+        public class ConfigureParsingAndReturnSampleTests : InstagramHtmlParserTests
+        {
+            [TestMethod]
+            public void GeneratesConfigurationFromSampleFile()
+            {
+                // arrange
+                var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Assert.IsNotNull(testDirectory);
+                var filePath = Path.Combine(testDirectory, "Parsers", "Instagram-html-sample.html");
+
+                var expectedMessage = new Message
+                {
+                    MessageText = "Yeah it is :)",
+                    Sender = new Person { DisplayName = "Receiving Person" },
+                    Timestamp = new DateTimeOffset(DateTime.Parse("Sep 20, 2019, 6:28 AM", CultureInfo.InvariantCulture)),
+                    Source = "Instagram"
+                };
+
+                // act
+                var sample = this.classUnderTest.ConfigureParsingAndReturnSample(filePath);
+
+                // assert
+                var config = sample.ParserConfiguration as MetaHtmlParserConfiguration;
+                Assert.IsTrue(new MessageEqualityComparer().Equals(expectedMessage, sample.SampleMessage), "The message should match the expected message.");
+                Assert.IsNotNull(config);
+                Assert.AreEqual("uiBoxWhite", config.MessageHeaderIdentifer, "Failed to configure parsing from file.");
             }
         }
     }

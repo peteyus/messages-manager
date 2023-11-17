@@ -288,7 +288,50 @@
 
         private MetaHtmlParserConfiguration GenerateConfigurationFromFile(HtmlDocument htmlDoc)
         {
-            throw new NotImplementedException();
+            var configuration = new MetaHtmlParserConfiguration();
+            
+            var messageRootNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@role='main']");
+            var childDivs = messageRootNode.Elements("div");
+            var totalNodes = childDivs.Count();
+            if (totalNodes == 0) return configuration;
+
+            int counter = 0;
+            IEnumerable<string> lastClasses = childDivs.First().GetClasses();
+            for (int i = 1; i <  Math.Min(20, totalNodes); i++)
+            {
+                var currentNode = childDivs.ElementAt(i);
+                if (lastClasses.Except(currentNode.GetClasses()).Count() == 0)
+                {
+                    counter++;
+                    if (counter < Math.Min(totalNodes - 1, 2)) continue;
+
+                    // Look for "uiBoxWhite" as the message class, but if not found take the last entry in classes which seems to be unique to messages.
+                    configuration.MessageHeaderIdentifer = 
+                        lastClasses.FirstOrDefault(str => str.Equals("uiboxwhite", StringComparison.OrdinalIgnoreCase)) ?? lastClasses.Last();
+
+                    var children = currentNode.Elements("div");
+                    if (children.Count() != 3)
+                    {
+                        // something went wrong, failed to autocalculate. Fall back with defaults.
+                        break;
+                    }
+
+                    configuration.SenderNodeIdentifier = children.ElementAt(0).GetClasses().Last();
+                    configuration.ContentNodeIdentifier = children.ElementAt(1).GetClasses().Last();
+                    configuration.TimestampNodeIdentifier = children.ElementAt(2).GetClasses().Last();
+
+                    configuration.WasAutoCalculated = true;
+                    break;
+                }
+                else
+                {
+                    lastClasses = currentNode.GetClasses();
+                    counter = 0;
+                    continue;
+                }
+            }
+
+            return configuration;
         }
     }
 }

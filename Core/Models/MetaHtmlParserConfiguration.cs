@@ -2,9 +2,10 @@
 {
     public class MetaHtmlParserConfiguration : MessageParserConfiguration
     {
-        public string MessageHeaderIdentifer { get; set; } = "_2lej";
-        public string SenderNodeIdentifier { get; set; } = "_2lek";
-        public string TimestampNodeIdentifier { get; set; } = "_2lem";
-        public string ContentNodeIdentifier { get; set; } = "_2let";
+        public bool WasAutoCalculated { get; set; } = false;
+        public string MessageHeaderIdentifer { get; set; } = string.Empty;
+        public string SenderNodeIdentifier { get; set; } = string.Empty;
+        public string TimestampNodeIdentifier { get; set; } = string.Empty;
+        public string ContentNodeIdentifier { get; set; } = string.Empty;
     }
 }
