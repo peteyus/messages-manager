@@ -118,6 +118,37 @@
             }
 
             [TestMethod]
+            public void ReadsMessageWithVideo()
+            {
+                // Arrange
+                var html = @"
+<div role=""main"">
+    <div class=""_2lej"">
+        <div class=""_2lek"">Jimbob MessageSender</div>
+        <div class=""_2let"">
+            <div>
+                <div />
+                <div></div>
+                <div></div>
+                <div></div>
+                <div><video src=""SomePath""><a href=""SomePath"" /></video></div>
+                <div></div>
+            </div>
+        </div>
+        <div class=""_2lem"">Aug 19, 2021, 2:49 PM</div>
+    </div>
+</div>";
+
+                // Act
+                var message = this.classUnderTest.ReadMessages(html, this.testconfiguration).Single();
+
+                // Assert
+                Assert.IsNotNull(message);
+                Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
+                Assert.IsTrue(message.Videos.Any(vid => vid.VideoUrl == "SomePath"), "Should have added the video source to the URLs.");
+                Assert.AreEqual(1, message.Videos.Count, "Should only have identified a single image node.");
+            }
+            [TestMethod]
             public void ReadsMessageSegmentWtihTwoImages()
             {
                 // Arrange

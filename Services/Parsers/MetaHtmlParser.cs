@@ -186,6 +186,11 @@
                         {
                             this.ProcessReactions(message, reactionNode);
                         }
+
+                        foreach (var videoNode in mediaNode.Descendants("video"))
+                        {
+                            this.ProcessVideo(message, videoNode);
+                        }
                         break;
                 }
             }
@@ -227,6 +232,12 @@
                     message.Links.Add(newUri);
                 }
             }
+        }
+
+        private void ProcessVideo(Message message, HtmlNode videoNode)
+        {
+            // TODO PRJ: Import images into data store? Or reference on disk?
+            message.Videos.Add(new Video { VideoUrl = videoNode.Attributes["src"].Value });
         }
 
         private void ProcessText(Message message, HtmlNode textNode)
