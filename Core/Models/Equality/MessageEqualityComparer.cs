@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
 
-    public class MessageEqualityComparer : IEqualityComparer<Message>, IEqualityComparer<Person>, IEqualityComparer<Share>
+    public class MessageEqualityComparer : IEqualityComparer<Message>, IEqualityComparer<Person>, IEqualityComparer<Share>, IEqualityComparer<Video>, IEqualityComparer<Audio>, IEqualityComparer<Photo>
     {
         public bool Equals(Message? x, Message? y)
         {
@@ -16,7 +16,13 @@
             propertiesMatch &= Equals(x.Share, y.Share);
             propertiesMatch &= Equals(x.Source, y.Source);
 
-            return propertiesMatch;
+            var collectionsMatch = true;
+            collectionsMatch &= !x.Videos.Except(y.Videos, this).Any();
+            collectionsMatch &= !x.Images.Except(y.Images, this).Any();
+            collectionsMatch &= !x.Audio.Except(y.Audio, this).Any();
+            collectionsMatch &= !x.Links.Except(y.Links).Any();
+
+            return propertiesMatch && collectionsMatch;
         }
 
         public bool Equals(Person? x, Person? y)
@@ -38,12 +44,37 @@
             if (x == null && y == null) return true;
             if (x == null || y == null) return false;
 
-            // TODO
             var propertiesMatch = x.ShareText == y.ShareText;
             propertiesMatch &= x.OriginalContentOwner == y.OriginalContentOwner;
             propertiesMatch &= x.Url == y.Url;
 
             return propertiesMatch;
+        }
+
+        public bool Equals(Video? x, Video? y)
+        {
+            if (x == null && y == null) return true;
+            if (x == null || y == null) return false;
+
+            return x.VideoUrl == y.VideoUrl;
+        }
+
+        public bool Equals(Audio? x, Audio? y)
+        {
+            if (x == null && y == null) return true;
+            if (x == null || y == null) return false;
+
+            return x.FileUrl == y.FileUrl &&
+                x.CreatedAt == y.CreatedAt;
+        }
+
+        public bool Equals(Photo? x, Photo? y)
+        {
+            if (x == null && y == null) return true;
+            if (x == null || y == null) return false;
+
+            return x.ImageUrl == y.ImageUrl &&
+                x.CreatedAt == y.CreatedAt;
         }
 
         public int GetHashCode([DisallowNull] Message obj)
@@ -84,6 +115,41 @@
                 hashCode = (hashCode * 317) ^ (obj.Url?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 317) ^ (obj.OriginalContentOwner?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 317) ^ (obj.ShareText?.GetHashCode() ?? 0);
+
+                return hashCode;
+            }
+        }
+
+        public int GetHashCode([DisallowNull] Video obj)
+        {
+            unchecked
+            {
+                int hashCode = 137;
+                hashCode = (hashCode * 317) ^ (obj.VideoUrl?.GetHashCode() ?? 0);
+
+                return hashCode;
+            }
+        }
+
+        public int GetHashCode([DisallowNull] Audio obj)
+        {
+            unchecked
+            {
+                int hashCode = 137;
+                hashCode = (hashCode * 317) ^ (obj.FileUrl?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 317) ^ (obj.CreatedAt?.GetHashCode() ?? 0);
+
+                return hashCode;
+            }
+        }
+
+        public int GetHashCode([DisallowNull] Photo obj)
+        {
+            unchecked
+            {
+                int hashCode = 137;
+                hashCode = (hashCode * 317) ^ (obj.ImageUrl?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 317) ^ (obj.CreatedAt?.GetHashCode() ?? 0);
 
                 return hashCode;
             }
