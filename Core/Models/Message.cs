@@ -22,7 +22,7 @@
         public IList<Uri> Links { get; set; }
         public IList<Video> Videos { get; set; }
         public Share? Share { get; set; }
-        public IList<MessageReaction> Reactions { get; }
+        public IList<MessageReaction> Reactions { get; set; }
 
         public override string ToString()
         {

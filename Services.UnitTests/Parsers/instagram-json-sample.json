@@ -1,0 +1,51 @@
+{
+    "participants": [
+        {
+            "name": "Person One"
+        },
+        {
+            "name": "Person Two"
+        }
+    ],
+    "messages": [
+        {
+            "sender_name": "Person One",
+            "timestamp_ms": 1700010673608,
+            "content": "That funny thing I wrote that time",
+            "is_geoblocked_for_viewer": false
+        },
+        {
+            "sender_name": "Person Two",
+            "timestamp_ms": 1700010673000,
+            "content": "Some inane something or other",
+            "is_geoblocked_for_viewer": false
+        },
+        {
+            "sender_name": "Person One",
+            "timestamp_ms": 1700010672500,
+            "videos": [
+                {
+                  "uri": "messages/inbox/personOne/videos/video.mp4"
+                }
+            ],
+            "reactions": [
+                {
+                    "reaction": "\u00f0\u009f\u00a4\u00a3",
+                    "actor": "Person Two"
+                }
+            ],
+            "is_geoblocked_for_viewer": false
+        },
+        {
+            "sender_name": "Person One",
+            "timestamp_ms": 1700010672000,
+            "audio_files": [
+                {
+                  "uri": "messages/inbox/personOne/audio/audio.aac",
+                  "creation_timestamp": 1700010672000
+                }
+            ],
+            "is_geoblocked_for_viewer": false
+        }
+    ]
+}

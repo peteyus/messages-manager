@@ -6,5 +6,10 @@
         {
             if (obj == null) throw new ArgumentNullException(argumentName ?? "An unnammed object");
         }
+
+        public static bool IsNull(this object? obj)
+        {
+            return obj == null;
+        }
     }
 }
