@@ -437,8 +437,8 @@
         <div class=""_2let"">
             <div>
                 <div />
-                <div></div>
                 <div>Here's my message content.</div>
+                <div></div>
                 <div></div>
             </div>
         </div>
@@ -452,6 +452,7 @@
                 // Assert
                 Assert.IsNotNull(message);
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
+                Assert.AreEqual("Here's my message content.", message.MessageText, "Did not capture the message text.");
             }
         }
     }
