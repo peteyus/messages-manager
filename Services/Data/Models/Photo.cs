@@ -1,6 +1,6 @@
-﻿namespace Core.Models
+﻿namespace Services.Data.Models
 {
-    public class Photo
+    internal class Photo
     {
         public int Id { get; set; }
         public string? ImageUrl { get; set; }

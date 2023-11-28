@@ -1,6 +1,6 @@
-﻿namespace Core.Models
+﻿namespace Services.Data.Models
 {
-    public class Message
+    internal class Message
     {
         public Message()
         {
@@ -12,7 +12,6 @@
         }
 
         public int Id { get; set; }
-        // TODO PRJ: Enum? Want to be able to differentiate
         public string? Source { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public Person? Sender { get; set; }
@@ -24,10 +23,5 @@
         public IList<Video> Videos { get; set; }
         public Share? Share { get; set; }
         public IList<MessageReaction> Reactions { get; set; }
-
-        public override string ToString()
-        {
-            return $"Message, Sender {this.Sender?.DisplayName ?? "[empty]"} at Timestamp {this.Timestamp}.";
-        }
     }
 }

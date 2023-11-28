@@ -1,6 +1,6 @@
-﻿namespace Core.Models
+﻿namespace Services.Data.Models
 {
-    public class MessageReaction
+    internal class MessageReaction
     {
         public int Id { get; set; }
         public string? Reaction { get; set; }

@@ -1,6 +1,6 @@
-﻿namespace Core.Models
+﻿namespace Services.Data.Models
 {
-    public class Video
+    internal class Video
     {
         public int Id { get; set; }
         public string? VideoUrl { get; set; }
