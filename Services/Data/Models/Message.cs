@@ -12,6 +12,8 @@
         }
 
         public int Id { get; set; }
+        public int SenderId { get; set; }
+        public int? ShareId { get; set; }
         public string? Source { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public Person? Sender { get; set; }

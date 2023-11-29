@@ -2,11 +2,11 @@
 {
     using Microsoft.EntityFrameworkCore;
 
-    public class SqliteContext : DbContext
+    public class SqliteContext : BaseDbContext
     {
         private string _databasePath;
 
-        public SqliteContext()
+        public SqliteContext(DbContextOptions options) : base(options)
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
