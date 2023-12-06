@@ -1,8 +1,13 @@
+using Services.Data.Stores;
+using System.IO.Abstractions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IFileSystem, FileSystem>();
+builder.Services.AddDbContext<SqliteContext>(); // TODO PRJ: How do we add / configure which context to use?
 
 var app = builder.Build();
 
@@ -13,7 +18,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Configure EF context, if not deployed
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<SqliteContext>();
+    context.Database.EnsureCreated(); // TODO PRJ: Fine for development, replace with long term storage.
+}
+
+    app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
