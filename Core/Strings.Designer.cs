@@ -79,11 +79,29 @@ namespace Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to find parser to match type &apos;{0}&apos;.
+        /// </summary>
+        public static string ErrorParserNotFound {
+            get {
+                return ResourceManager.GetString("ErrorParserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not find &quot;main&quot; message node in HTML file at path &apos;{0}&apos;..
         /// </summary>
         public static string ErrorRootNodeNotFound {
             get {
                 return ResourceManager.GetString("ErrorRootNodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File &apos;{0}&apos; is an unknown format and parser format cannot be autodetected..
+        /// </summary>
+        public static string ErrorUnknownFileFormat {
+            get {
+                return ResourceManager.GetString("ErrorUnknownFileFormat", resourceCulture);
             }
         }
     }

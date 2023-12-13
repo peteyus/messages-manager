@@ -13,6 +13,7 @@
         {
         }
 
+        internal DbSet<Conversation> Conversations { get; set; }
         internal DbSet<Message> Messages { get; set; }
         internal DbSet<Audio> Audio { get; set; }
         internal DbSet<Photo> Images { get; set; }
@@ -22,6 +23,8 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TODO PRJ: Do I need to establish relationships? I can _probably_ just let EF convention do it. Research this
+            modelBuilder.Entity<Conversation>().ToTable("Conversations");
             modelBuilder.Entity<Message>().ToTable("Messages");
             modelBuilder.Entity<Audio>().ToTable("Audio");
             modelBuilder.Entity<Photo>().ToTable("Images");

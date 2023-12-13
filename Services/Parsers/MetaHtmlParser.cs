@@ -1,6 +1,7 @@
 ﻿namespace Services.Parsers
 {
     using Core;
+    using Core.Enums;
     using Core.Extensions;
     using Core.Interfaces;
     using Core.Models;
@@ -13,6 +14,8 @@
     public abstract class MetaHtmlParser : IMessageParser
     {
         public abstract string SourceName { get; }
+
+        public abstract MessageParsers ParserType { get; }
 
         public IEnumerable<Message> ReadMessagesFromFile(string sourceFilePath, MessageParserConfiguration? options = null)
         {

@@ -1,6 +1,6 @@
 ﻿namespace Services.Data.Models
 {
-    internal class MessageReaction
+    public class MessageReaction
     {
         public int Id { get; set; }
         public int PersonId { get; set; }

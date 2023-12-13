@@ -1,6 +1,6 @@
 ﻿namespace Services.Data.Models
 {
-    internal class Photo
+    public class Photo
     {
         public int Id { get; set; }
         public string? ImageUrl { get; set; }

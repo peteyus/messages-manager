@@ -1,14 +1,19 @@
 ﻿namespace Services.Data.Models
 {
-    internal class Message
+    using Services.Data.Models.Equality;
+    using System.Collections.Generic;
+
+    public class Message
     {
         public Message()
         {
-            this.Reactions = new List<MessageReaction>();
-            this.Images = new List<Photo>();
-            this.Audio = new List<Audio>();
-            this.Links = new List<Uri>();
-            this.Videos = new List<Video>();
+            var comparer = new DataEqualityComparer();
+
+            this.Reactions = new HashSet<MessageReaction>(comparer);
+            this.Images = new HashSet<Photo>(comparer);
+            this.Audio = new HashSet<Audio>(comparer);
+            this.Links = new HashSet<Uri>();
+            this.Videos = new HashSet<Video>(comparer);
         }
 
         public int Id { get; set; }
@@ -19,11 +24,11 @@
         public Person? Sender { get; set; }
         public string? MessageText { get; set; }
         public string? MessageHtml { get; set; }
-        public IList<Photo> Images { get; set; }
-        public IList<Audio> Audio { get; set; }
-        public IList<Uri> Links { get; set; }
-        public IList<Video> Videos { get; set; }
+        public ICollection<Photo> Images { get; set; }
+        public ICollection<Audio> Audio { get; set; }
+        public ICollection<Uri> Links { get; set; }
+        public ICollection<Video> Videos { get; set; }
         public Share? Share { get; set; }
-        public IList<MessageReaction> Reactions { get; set; }
+        public ICollection<MessageReaction> Reactions { get; set; }
     }
 }

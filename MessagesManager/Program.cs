@@ -1,4 +1,7 @@
+using Core.Interfaces;
+using Services;
 using Services.Data.Stores;
+using Services.Parsers;
 using System.IO.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,8 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+// TODO PRJ: Is there a more standard way to do this?
+// Constructor Parameters
 builder.Services.AddSingleton<IFileSystem, FileSystem>();
+builder.Services.AddTransient<IMessageParser, FacebookHtmlParser>();
+builder.Services.AddTransient<IMessageParser, InstagramHtmlParser>();
+builder.Services.AddTransient<IMessageParser, FacebookJsonParser>();
+builder.Services.AddTransient<IMessageParser, InstagramJsonParser>();
+
+// DBContexts
 builder.Services.AddDbContext<SqliteContext>(); // TODO PRJ: How do we add / configure which context to use?
+
+// Service Implementations
+builder.Services.AddSingleton<IMessageImporter, MessageImporter>();
+builder.Services.AddTransient<IParserDetector, ParserDetector>();
 
 var app = builder.Build();
 

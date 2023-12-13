@@ -1,5 +1,6 @@
 ﻿namespace Services.Parsers
 {
+    using Core.Enums;
     using Core.Extensions;
     using Core.Interfaces;
     using Core.Models;
@@ -20,6 +21,8 @@
         }
 
         public abstract string Source { get; }
+
+        public abstract MessageParsers ParserType { get; }
 
         public MessageSample ConfigureParsingAndReturnSample(string sourceFilePath, MessageParserConfiguration? options = null)
         {

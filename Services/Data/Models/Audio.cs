@@ -1,6 +1,6 @@
 ﻿namespace Services.Data.Models
 {
-    internal class Audio
+    public class Audio
     {
         public int Id { get; set; }
         public string? FileUrl { get; set; }
