@@ -4,7 +4,7 @@
     {
         public Message()
         {
-            this.Reactions = new List<MessageReaction>();
+            this.Reactions = new List<Reaction>();
             this.Images = new List<Photo>();
             this.Audio = new List<Audio>();
             this.Links = new List<Uri>();
@@ -23,7 +23,7 @@
         public IList<Uri> Links { get; set; }
         public IList<Video> Videos { get; set; }
         public Share? Share { get; set; }
-        public IList<MessageReaction> Reactions { get; set; }
+        public IList<Reaction> Reactions { get; set; }
 
         public override string ToString()
         {

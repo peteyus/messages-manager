@@ -1,9 +1,9 @@
 ﻿namespace Core.Models
 {
-    public class MessageReaction
+    public class Reaction
     {
         public int Id { get; set; }
-        public string? Reaction { get; set; }
+        public string? ReactionText { get; set; }
         public Person? Person { get; set; }
     }
 }

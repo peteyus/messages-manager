@@ -271,7 +271,7 @@
             foreach (var reactionNode in childNodes)
             {
                 var unicodeString = new StringInfo(reactionNode.InnerText.Trim());
-                var reaction = new MessageReaction { Reaction = unicodeString.SubstringByTextElements(0, 1), Person = new Person { DisplayName = unicodeString.SubstringByTextElements(1) } };
+                var reaction = new Reaction { ReactionText = unicodeString.SubstringByTextElements(0, 1), Person = new Person { DisplayName = unicodeString.SubstringByTextElements(1) } };
                 message.Reactions.Add(reaction);
             }
         }

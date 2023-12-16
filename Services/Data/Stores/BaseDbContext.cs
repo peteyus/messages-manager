@@ -2,8 +2,9 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Services.Data.Models;
+    using Services.Interfaces;
 
-    public abstract class BaseDbContext : DbContext
+    public abstract class BaseDbContext : DbContext, IMessageContext
     {
         public BaseDbContext()
         {
@@ -13,13 +14,15 @@
         {
         }
 
-        internal DbSet<Conversation> Conversations { get; set; }
-        internal DbSet<Message> Messages { get; set; }
-        internal DbSet<Audio> Audio { get; set; }
-        internal DbSet<Photo> Images { get; set; }
-        internal DbSet<Person> People { get; set; }
-        internal DbSet<Share> Shares { get; set; }
-        internal DbSet<Video> Videos { get; set; }
+        public DbContext DbContext => this;
+
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Audio> Audio { get; set; }
+        public DbSet<Photo> Images { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Share> Shares { get; set; }
+        public DbSet<Video> Videos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

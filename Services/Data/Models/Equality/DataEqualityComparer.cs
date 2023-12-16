@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
 
-    public class DataEqualityComparer : IEqualityComparer<Message>, IEqualityComparer<Person>, IEqualityComparer<Share>, IEqualityComparer<Video>, IEqualityComparer<Audio>, IEqualityComparer<Photo>, IEqualityComparer<MessageReaction>
+    public class DataEqualityComparer : IEqualityComparer<Message>, IEqualityComparer<Person>, IEqualityComparer<Share>, IEqualityComparer<Video>, IEqualityComparer<Audio>, IEqualityComparer<Photo>, IEqualityComparer<Reaction>
     {
         public bool Equals(Message? x, Message? y)
         {
@@ -77,13 +77,13 @@
                 x.CreatedAt == y.CreatedAt;
         }
 
-        public bool Equals(MessageReaction? x, MessageReaction? y)
+        public bool Equals(Reaction? x, Reaction? y)
         {
             if (x == null && y == null) return true;
             if (x == null || y == null) return false;
 
             var propertiesMatch = x.Id == y.Id;
-            propertiesMatch &= x.Reaction == y.Reaction;
+            propertiesMatch &= x.ReactionText == y.ReactionText;
             propertiesMatch &= Equals(x.Person, y.Person);
 
             return propertiesMatch;
@@ -167,7 +167,7 @@
             }
         }
 
-        public int GetHashCode([DisallowNull] MessageReaction obj)
+        public int GetHashCode([DisallowNull] Reaction obj)
         {
             throw new NotImplementedException();
         }

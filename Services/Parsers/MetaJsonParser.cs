@@ -176,7 +176,7 @@
                 if (value is null) continue;
 
                 var unicodeString = this.DecodeEmojiInString(value);
-                var reaction = new MessageReaction { Reaction = unicodeString, Person = new Person { DisplayName = reactionNode["actor"]?.AsValue().ToString() } };
+                var reaction = new Reaction { ReactionText = unicodeString, Person = new Person { DisplayName = reactionNode["actor"]?.AsValue().ToString() } };
                 message.Reactions.Add(reaction);
             }
         }

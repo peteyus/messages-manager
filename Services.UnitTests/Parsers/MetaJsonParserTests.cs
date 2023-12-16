@@ -290,7 +290,7 @@
                 // assert
                 Assert.IsNotNull(messages);
                 var message = messages.Single();
-                Assert.AreEqual("🤣", message.Reactions.Single().Reaction);
+                Assert.AreEqual("🤣", message.Reactions.Single().ReactionText);
                 Assert.AreEqual("Person Two", message.Reactions.Single().Person?.DisplayName);
             }
 
@@ -334,9 +334,9 @@
                 Assert.IsNotNull(messages);
                 var message = messages.Single();
                 Assert.AreEqual(2, message.Reactions.Count());
-                Assert.AreEqual("🤣", message.Reactions.First().Reaction);
+                Assert.AreEqual("🤣", message.Reactions.First().ReactionText);
                 Assert.AreEqual("Person Two", message.Reactions.First().Person?.DisplayName);
-                Assert.AreEqual("❤️", message.Reactions.Last().Reaction);
+                Assert.AreEqual("❤️", message.Reactions.Last().ReactionText);
                 Assert.AreEqual("Person One", message.Reactions.Last().Person?.DisplayName);
             }
 
@@ -467,7 +467,7 @@
                         Sender = new Person { DisplayName = "Person One" },
                         Timestamp = DateTimeOffset.FromUnixTimeMilliseconds(1700010672500),
                         Videos = new[] { new Video { VideoUrl = "messages/inbox/personOne/videos/video.mp4" } },
-                        Reactions = new[] { new MessageReaction { Person = new Person { DisplayName = "Person Two"}, Reaction = "🤣" } },
+                        Reactions = new[] { new Reaction { Person = new Person { DisplayName = "Person Two"}, ReactionText = "🤣" } },
                         Source = "Instagram"
                     },
                     new Message
@@ -526,7 +526,7 @@
                         Sender = new Person { DisplayName = "Person One" },
                         Timestamp = DateTimeOffset.FromUnixTimeMilliseconds(1700010672500),
                         Videos = new[] { new Video { VideoUrl = "messages/inbox/personOne/videos/video.mp4" } },
-                        Reactions = new[] { new MessageReaction { Person = new Person { DisplayName = "Person Two"}, Reaction = "🤣" } },
+                        Reactions = new[] { new Reaction { Person = new Person { DisplayName = "Person Two"}, ReactionText = "🤣" } },
                         Source = "Instagram"
                     },
                     new Message

@@ -248,7 +248,7 @@
                 Assert.IsNotNull(message);
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
                 Assert.AreEqual(1, message.Reactions.Count, "Wrong number of reaction.");
-                Assert.AreEqual("👍", message.Reactions[0].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", message.Reactions[0].ReactionText, "Did not capture expected reaction.");
                 Assert.IsNotNull(message.Reactions[0].Person, "Should have identified a person.");
                 Assert.AreEqual("Janebob MessageReceiver", message.Reactions[0].Person?.DisplayName, "Did not parse out the person.");
             }
@@ -286,9 +286,9 @@
                 Assert.IsNotNull(message);
                 Assert.AreEqual("Jimbob MessageSender", message.Sender?.DisplayName, "Wrong name for sender.");
                 Assert.AreEqual(2, message.Reactions.Count, "Wrong number of reaction.");
-                Assert.AreEqual("👍", message.Reactions[0].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", message.Reactions[0].ReactionText, "Did not capture expected reaction.");
                 Assert.AreEqual("Janebob MessageReceiver", message.Reactions[0].Person?.DisplayName, "Did not parse out the person.");
-                Assert.AreEqual("😉", message.Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("😉", message.Reactions[1].ReactionText, "Did not capture expected reaction.");
                 Assert.AreEqual("Jimbob MessageSender", message.Reactions[1].Person?.DisplayName, "Did not parse out the person.");
             }
 
@@ -343,13 +343,13 @@
                 Assert.AreEqual(2, messages.Count(), "Should have detected two messages.");
                 Assert.AreEqual("Jimbob MessageSender", messages.First().Sender?.DisplayName, "Wrong name for sender.");
                 Assert.AreEqual(2, messages.First().Reactions.Count, "Wrong number of reaction.");
-                Assert.AreEqual("👍", messages.First().Reactions[0].Reaction, "Did not capture expected reaction.");
-                Assert.AreEqual("😉", messages.First().Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", messages.First().Reactions[0].ReactionText, "Did not capture expected reaction.");
+                Assert.AreEqual("😉", messages.First().Reactions[1].ReactionText, "Did not capture expected reaction.");
 
                 Assert.AreEqual("Janebob MessageReceiver", messages.Last().Sender?.DisplayName, "Wrong name for second sender.");
                 Assert.AreEqual(2, messages.Last().Reactions.Count, "Wrong number of reaction.");
-                Assert.AreEqual("😉", messages.Last().Reactions[0].Reaction, "Did not capture expected reaction.");
-                Assert.AreEqual("👍", messages.Last().Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("😉", messages.Last().Reactions[0].ReactionText, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", messages.Last().Reactions[1].ReactionText, "Did not capture expected reaction.");
             }
 
             [TestMethod]
@@ -407,8 +407,8 @@
                 Assert.AreEqual(2, messages.Count(), "Should have detected two messages.");
                 Assert.AreEqual("Jimbob MessageSender", messages.First().Sender?.DisplayName, "Wrong name for sender.");
                 Assert.AreEqual(2, messages.First().Reactions.Count, "Wrong number of reaction.");
-                Assert.AreEqual("👍", messages.First().Reactions[0].Reaction, "Did not capture expected reaction.");
-                Assert.AreEqual("😉", messages.First().Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", messages.First().Reactions[0].ReactionText, "Did not capture expected reaction.");
+                Assert.AreEqual("😉", messages.First().Reactions[1].ReactionText, "Did not capture expected reaction.");
                 Assert.AreEqual(2, messages.First().Images.Count, "Wrong number of images");
                 Assert.IsTrue(messages.First().Images[0]?.ImageUrl?.Equals("SomePath"), "Should have added the image source to the URLs.");
                 Assert.IsTrue(messages.First().Images[1]?.ImageUrl?.Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
@@ -416,8 +416,8 @@
 
                 Assert.AreEqual("Janebob MessageReceiver", messages.Last().Sender?.DisplayName, "Wrong name for second sender.");
                 Assert.AreEqual(2, messages.Last().Reactions.Count, "Wrong number of reaction.");
-                Assert.AreEqual("😉", messages.Last().Reactions[0].Reaction, "Did not capture expected reaction.");
-                Assert.AreEqual("👍", messages.Last().Reactions[1].Reaction, "Did not capture expected reaction.");
+                Assert.AreEqual("😉", messages.Last().Reactions[0].ReactionText, "Did not capture expected reaction.");
+                Assert.AreEqual("👍", messages.Last().Reactions[1].ReactionText, "Did not capture expected reaction.");
                 Assert.AreEqual(2, messages.Last().Images.Count, "Wrong number of images");
                 Assert.IsTrue(messages.Last().Images[0]?.ImageUrl?.Equals("SomeOtherPath"), "Should have added the image source to the URLs.");
                 Assert.IsTrue(messages.Last().Images[1]?.ImageUrl?.Equals("SomePath"), "Should have added the image source to the URLs.");

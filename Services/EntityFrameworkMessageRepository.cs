@@ -1,13 +1,30 @@
 ﻿namespace Services
 {
+    using Core.Extensions;
     using Core.Interfaces;
     using Core.Models;
+    using Services.Interfaces;
 
     public class EntityFrameworkMessageRepository : IMessageRepository
     {
+        private readonly IMessageContext context;
+
+        public EntityFrameworkMessageRepository(IMessageContext context)
+        {
+            context.ThrowIfNull(nameof(context));
+
+            this.context = context;
+        }
+
         public Conversation GetConversation(int id)
         {
-            throw new NotImplementedException();
+            var result = this.context.Conversations.FirstOrDefault(conversation => conversation.Id == id);
+            if (result == null)
+            {
+                throw new InvalidOperationException($"Conversastion ID {id} not found.");
+            }
+
+            return result;
         }
 
         public IEnumerable<Conversation> GetConversations()

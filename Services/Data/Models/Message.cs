@@ -9,7 +9,7 @@
         {
             var comparer = new DataEqualityComparer();
 
-            this.Reactions = new HashSet<MessageReaction>(comparer);
+            this.Reactions = new HashSet<Reaction>(comparer);
             this.Images = new HashSet<Photo>(comparer);
             this.Audio = new HashSet<Audio>(comparer);
             this.Links = new HashSet<Uri>();
@@ -29,6 +29,6 @@
         public ICollection<Uri> Links { get; set; }
         public ICollection<Video> Videos { get; set; }
         public Share? Share { get; set; }
-        public ICollection<MessageReaction> Reactions { get; set; }
+        public ICollection<Reaction> Reactions { get; set; }
     }
 }
