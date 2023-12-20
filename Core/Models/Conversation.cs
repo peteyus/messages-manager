@@ -4,12 +4,11 @@
     {
         public Conversation()
         {
-            this.Messages = new List<Message>();
             this.People = new List<Person>();
         }
 
         public int Id { get; set; }
-        public List<Message> Messages { get; set; }
+        public int MessageCount { get; set; }
         public IList<Person> People { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 using Core.Interfaces;
 using Services;
 using Services.Data.Stores;
+using Services.Interfaces.Mappers;
+using Services.Mappers;
 using Services.Parsers;
 using System.IO.Abstractions;
 
@@ -17,6 +19,10 @@ builder.Services.AddTransient<IMessageParser, FacebookHtmlParser>();
 builder.Services.AddTransient<IMessageParser, InstagramHtmlParser>();
 builder.Services.AddTransient<IMessageParser, FacebookJsonParser>();
 builder.Services.AddTransient<IMessageParser, InstagramJsonParser>();
+
+// Mappers
+builder.Services.AddTransient<IConversationMapper, ConversationMapper>();
+builder.Services.AddTransient<IPersonMapper, PersonMapper>();
 
 // DBContexts
 builder.Services.AddDbContext<SqliteContext>(); // TODO PRJ: How do we add / configure which context to use?

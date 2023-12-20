@@ -24,6 +24,7 @@
         public IList<Video> Videos { get; set; }
         public Share? Share { get; set; }
         public IList<Reaction> Reactions { get; set; }
+        public int ConversationId { get; set; }
 
         public override string ToString()
         {
