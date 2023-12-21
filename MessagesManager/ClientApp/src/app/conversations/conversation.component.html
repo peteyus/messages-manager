@@ -1,4 +1,9 @@
-<li><a class="nav-link text-dark" routerLink="['/conversations']">Back</a></li>
+<li><a class="nav-link text-dark" [routerLink]="['/conversations']">Back</a></li>
 <h3>You have clicked on conversation {{conversationId}}</h3>
-<p class="message-sender">blah blah blah</p>
-<p class="message-receiver">blah blah blah blah</p>
+
+<!-- TODO: Componentize messages -->
+<ul>
+  <li *ngFor="let message of messages">
+    <span style="message-sender">{{message.sender.displayName}}</span>: <span style="message-text">{{message.messageText}}</span> <span style="message-timestamp">({{message.timestamp}})</span>
+  </li>
+</ul>

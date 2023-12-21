@@ -15,7 +15,8 @@ import { ConversationComponent } from './conversations/conversation.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    ConversationsListComponent
+    ConversationsListComponent,
+    ConversationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

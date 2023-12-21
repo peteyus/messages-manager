@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\conversations\conversation.component.ts" />
+    <None Remove="ClientApp\src\shared\message.ts" />
+    <None Remove="ClientApp\src\shared\models\person.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +34,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\conversations\conversation.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\message.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\person.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
