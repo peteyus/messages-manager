@@ -9,6 +9,6 @@ export class HomeComponent {
   constructor(private router: Router) { }
 
   ngOnInit() {
-    setTimeout(() => this.router.navigate(['conversations']), 5000);
+    //setTimeout(() => this.router.navigate(['conversations']), 5000);
   }
 }

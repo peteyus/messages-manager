@@ -28,7 +28,7 @@ builder.Services.AddTransient<IPersonMapper, PersonMapper>();
 builder.Services.AddDbContext<SqliteContext>(); // TODO PRJ: How do we add / configure which context to use?
 
 // Service Implementations
-builder.Services.AddSingleton<IMessageImporter, MessageImporter>();
+//builder.Services.AddSingleton<IMessageImporter, MessageImporter>();
 builder.Services.AddTransient<IParserDetector, ParserDetector>();
 
 var app = builder.Build();
