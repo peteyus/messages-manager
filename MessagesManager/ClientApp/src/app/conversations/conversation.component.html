@@ -1,6 +1,9 @@
 <li><a class="nav-link text-dark" [routerLink]="['/conversations']">Back</a></li>
 <h3>You have clicked on conversation {{conversationId}}</h3>
-
+<div>
+  <input type="text" />
+  <button>Search</button>
+</div>
 <!-- TODO: Componentize messages -->
 <ul>
   <li *ngFor="let message of messages">
