@@ -24,6 +24,11 @@
               [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/conversations']">Conversations</a>
           </li>
+          <li class="nav-item"
+              [routerLinkActive]="['link-active']"
+              [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link text-dark" [routerLink]="['import']">Import</a>
+          </li>
         </ul>
       </div>
     </div>

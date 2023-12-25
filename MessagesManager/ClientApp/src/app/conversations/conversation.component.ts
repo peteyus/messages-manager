@@ -7,7 +7,6 @@ import { Person } from '../../shared/models/person';
   selector: 'app-conversation',
   templateUrl: './conversation.component.html',
 })
-
 export class ConversationComponent {
   conversationId: number;
   messages: Message[] = new Array();

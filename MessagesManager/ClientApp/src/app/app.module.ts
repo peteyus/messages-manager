@@ -3,12 +3,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select'; 
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ConversationsListComponent } from './conversations/conversations-list.component';
 import { ConversationComponent } from './conversations/conversation.component';
+import { ImportComponent } from './import/import.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +20,8 @@ import { ConversationComponent } from './conversations/conversation.component';
     NavMenuComponent,
     HomeComponent,
     ConversationsListComponent,
-    ConversationComponent
+    ConversationComponent,
+    ImportComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -26,7 +31,11 @@ import { ConversationComponent } from './conversations/conversation.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'conversations', component: ConversationsListComponent, pathMatch: 'full' },
       { path: 'conversation/:id', component: ConversationComponent, pathMatch: 'full' },
-    ])
+      { path: 'import', component: ImportComponent, pathMatch: 'full' }
+    ]),
+    MatIconModule,
+    MatProgressBarModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
