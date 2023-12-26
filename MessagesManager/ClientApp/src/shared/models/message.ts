@@ -1,4 +1,9 @@
+import { Audio } from './audio';
 import { Person } from './person';
+import { Photo } from './photo';
+import { Reaction } from './reaction';
+import { Share } from './share';
+import { Video } from './video';
 
 export interface Message {
   id: number;
@@ -7,13 +12,11 @@ export interface Message {
   sender: Person;
   messageText: string;
   messageHtml: string;
-  images: any; // photo[]?
-  audio: any; // audio[]?
+  images: Photo[];
+  audio: Audio[];
   links: string[];
-  videos: any; // video[]?
-  sharedUrl: string; // share.Url
-  sharedText: string; // share.ShareText
-  sharedOwner: string; // share.OriginalContentOwner
-  reactions: any; // reaction[]?
+  videos: Video[];
+  share: Share;
+  reactions: Reaction[];
   conversationId: number;
 }

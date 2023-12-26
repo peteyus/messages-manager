@@ -24,7 +24,12 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\conversations\conversation.component.ts" />
     <None Remove="ClientApp\src\shared\message.ts" />
+    <None Remove="ClientApp\src\shared\models\audio.ts" />
     <None Remove="ClientApp\src\shared\models\person.ts" />
+    <None Remove="ClientApp\src\shared\models\photo.ts" />
+    <None Remove="ClientApp\src\shared\models\reaction.ts" />
+    <None Remove="ClientApp\src\shared\models\share.ts" />
+    <None Remove="ClientApp\src\shared\models\video.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,8 +39,13 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\conversations\conversation.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\audio.ts" />
     <TypeScriptCompile Include="ClientApp\src\shared\models\message.ts" />
     <TypeScriptCompile Include="ClientApp\src\shared\models\person.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\photo.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\reaction.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\share.ts" />
+    <TypeScriptCompile Include="ClientApp\src\shared\models\video.ts" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
