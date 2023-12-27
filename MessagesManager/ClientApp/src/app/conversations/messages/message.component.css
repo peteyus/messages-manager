@@ -1,0 +1,13 @@
+.message-sender {
+    color: darkblue;
+    font-weight: bold;
+}
+
+.message-text {
+
+}
+
+.message-timestamp {
+    color: grey;
+    font-size: 0.8em;
+}

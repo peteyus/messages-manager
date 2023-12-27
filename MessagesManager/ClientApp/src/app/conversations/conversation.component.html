@@ -6,7 +6,5 @@
 </div>
 <!-- TODO: Componentize messages -->
 <ul>
-  <li *ngFor="let message of messages">
-    <span class="message-sender">{{message.sender.displayName}}</span>: <span class="message-text">{{message.messageText}}</span> <span class="message-timestamp">({{message.timestamp}})</span>
-  </li>
+  <app-message *ngFor="let message of messages" [message]=message></app-message>
 </ul>

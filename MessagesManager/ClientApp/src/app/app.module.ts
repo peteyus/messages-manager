@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { ConversationsListComponent } from './conversations/conversations-list.component';
 import { ConversationComponent } from './conversations/conversation.component';
 import { ImportComponent } from './import/import.component';
+import { MessageComponent } from './conversations/messages/message.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ImportComponent } from './import/import.component';
     HomeComponent,
     ConversationsListComponent,
     ConversationComponent,
-    ImportComponent
+    ImportComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
