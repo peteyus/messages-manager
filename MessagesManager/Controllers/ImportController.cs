@@ -29,7 +29,7 @@
             try
             {
                 var file = Request.Form.Files[0];
-                string folderName = "Upload";
+                string folderName = this.fileSystem.Path.Combine("Upload", HttpContext.Session.Id);
                 string webRootPath = this.environment.WebRootPath;
                 string newPath = this.fileSystem.Path.Combine(webRootPath, folderName);
                 if (!this.fileSystem.Directory.Exists(newPath)) // TODO PRJ: session paths? How to prevent user collisions on filenames?

@@ -9,7 +9,6 @@ using System.IO.Abstractions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
 
 // TODO PRJ: Is there a more standard way to do this?
@@ -31,6 +30,15 @@ builder.Services.AddDbContext<SqliteContext>(); // TODO PRJ: How do we add / con
 //builder.Services.AddSingleton<IMessageImporter, MessageImporter>();
 builder.Services.AddTransient<IParserDetector, ParserDetector>();
 
+// Add session management support
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(120);
+    options.Cookie.HttpOnly = false;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,10 +57,10 @@ using (var scope = app.Services.CreateScope())
     context.Database.EnsureCreated(); // TODO PRJ: Fine for development, replace with long term storage.
 }
 
-    app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
