@@ -13,6 +13,9 @@ const PROXY_CONFIG = [
     secure: false,
     headers: {
       Connection: 'Keep-Alive'
+    },
+    infrastructureLogging: {
+      level: 'info',
     }
   }
 ]

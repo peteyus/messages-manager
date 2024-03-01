@@ -23,7 +23,7 @@ export class ImportComponent {
         const formData = new FormData();
         formData.append("thumbnail", file);
 
-        const upload$ = this.http.post("api/import/uploadfile", formData, {
+        const upload$ = this.http.post(`${this.baseUrl}api/import/uploadfile`, formData, {
             reportProgress: true,
             observe: 'events'
         })
