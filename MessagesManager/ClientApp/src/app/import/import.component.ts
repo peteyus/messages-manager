@@ -21,7 +21,8 @@ export class ImportComponent {
     if (file) {
         this.fileName = file.name;
         const formData = new FormData();
-        formData.append("thumbnail", file);
+        formData.append("file", file);
+        formData.append("sessionId", localStorage.getItem("sessionId"));
 
         const upload$ = this.http.post(`${this.baseUrl}api/import/uploadfile`, formData, {
             reportProgress: true,
