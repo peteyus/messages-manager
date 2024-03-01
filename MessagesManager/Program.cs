@@ -1,4 +1,5 @@
 using Core.Interfaces;
+using Microsoft.AspNetCore.Http.Features;
 using Services;
 using Services.Data.Stores;
 using Services.Interfaces.Mappers;
@@ -6,10 +7,16 @@ using Services.Mappers;
 using Services.Parsers;
 using System.IO.Abstractions;
 
+const long TenGigs = 10L * 1024 * 1024 * 1024;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = TenGigs;
+});
 
 // TODO PRJ: Is there a more standard way to do this?
 // Constructor Parameters
@@ -37,6 +44,11 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromSeconds(120);
     options.Cookie.HttpOnly = false;
     options.Cookie.IsEssential = true;
+});
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.Limits.MaxRequestBodySize = TenGigs;
 });
 
 var app = builder.Build();
