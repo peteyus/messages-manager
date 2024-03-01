@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -14,6 +14,7 @@ import { ConversationsListComponent } from './conversations/conversations-list.c
 import { ConversationComponent } from './conversations/conversation.component';
 import { ImportComponent } from './import/import.component';
 import { MessageComponent } from './conversations/messages/message.component';
+import { initializeSession } from './providers/sessionInitializer';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { MessageComponent } from './conversations/messages/message.component';
     MatProgressBarModule,
     MatSelectModule
   ],
-  providers: [],
+  providers: [
+    { provide: APP_INITIALIZER, useFactory: initializeSession, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

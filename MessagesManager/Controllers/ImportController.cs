@@ -24,18 +24,22 @@
 
         [HttpPost, DisableRequestSizeLimit]
         [Route("UploadFile")]
-        public ObjectResult UploadFile()
+        public async Task<ObjectResult> UploadFileAsync()
         {
             try
             {
-                var file = Request.Form.Files[0];
-                string folderName = this.fileSystem.Path.Combine("Upload", HttpContext.Session.Id);
-                string webRootPath = this.environment.WebRootPath;
-                string newPath = this.fileSystem.Path.Combine(webRootPath, folderName);
+                var form = await Request.ReadFormAsync(CancellationToken.None);
+                var file = form.Files[0];
+                string sessionId;
+                sessionId = form["sessionId"].FirstOrDefault() ?? Guid.NewGuid().ToString(); // TODO PRJ: Make this better.
+
+                string folderName = this.fileSystem.Path.Combine("Upload", sessionId);
+                string uploadRoot = this.fileSystem.Path.GetTempPath();
+                string newPath = this.fileSystem.Path.Combine(uploadRoot, folderName);
                 if (!this.fileSystem.Directory.Exists(newPath)) // TODO PRJ: session paths? How to prevent user collisions on filenames?
                 {
                     this.fileSystem.Directory.CreateDirectory(newPath);
-                }
+                 }
 
                 string fileName = "";
                 if (file.Length > 0)

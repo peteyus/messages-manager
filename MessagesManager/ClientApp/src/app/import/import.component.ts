@@ -27,8 +27,9 @@ export class ImportComponent {
     }
     const formData = new FormData();
     formData.append(file.name, file); 
+    formData.append('sessionId', localStorage.getItem('sessionId'))
     const upload$ = this.http.post(this.baseUrl + "api/import/uploadfile", formData);
-    upload$.subscribe();
+    upload$.subscribe(); // TODO PRJ: Use observable instead of subscribe
   }
 
   cancelUpload() {
