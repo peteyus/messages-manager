@@ -132,7 +132,6 @@
       }
     }
   },
-  "defaultProject": "MessagesManager",
   "cli": {
     "analytics": "8bbfb0c2-e507-454a-8f23-1bd3c7bb9043"
   }
