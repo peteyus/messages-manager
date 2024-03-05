@@ -30,13 +30,13 @@
             {
                 var form = await Request.ReadFormAsync(CancellationToken.None);
                 var file = form.Files[0];
-                string sessionId;
-                sessionId = form["sessionId"].FirstOrDefault() ?? Guid.NewGuid().ToString(); // TODO PRJ: Make this better.
+                string sessionId = form["sessionId"].FirstOrDefault() ?? Guid.NewGuid().ToString();
+                bool.TryParse(form["overwrite"].FirstOrDefault(), out bool overwrite);
 
                 string folderName = this.fileSystem.Path.Combine("Upload", sessionId);
                 string uploadRoot = this.fileSystem.Path.GetTempPath();
                 string newPath = this.fileSystem.Path.Combine(uploadRoot, folderName);
-                if (!this.fileSystem.Directory.Exists(newPath)) // TODO PRJ: session paths? How to prevent user collisions on filenames?
+                if (!this.fileSystem.Directory.Exists(newPath))
                 {
                     this.fileSystem.Directory.CreateDirectory(newPath);
                  }
@@ -46,12 +46,17 @@
                 {
                     fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName?.Trim('"') ?? Guid.NewGuid().ToString();
                     string fullPath = this.fileSystem.Path.Combine(newPath, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create)) // TODO PRJ: How to handle existing files if not session paths?
+                    if (this.fileSystem.File.Exists(fullPath) && !overwrite)
+                    {
+                        return Conflict("The file already exists.");
+                    }
+                    using (var stream = new FileStream(fullPath, FileMode.Create)) 
                     {
                         file.CopyTo(stream);
                     }
                 }
 
+                // TODO PRJ: Strategy pattern - determine file type here
                 return Ok(fileName);
             }
             catch (Exception ex)

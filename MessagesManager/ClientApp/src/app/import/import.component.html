@@ -7,7 +7,10 @@
           (click)="fileUpload.click()">
     <mat-icon>attach_file</mat-icon>
   </button>
+  <mat-checkbox [(ngModel)]="overwrite">Overwrite Existing File?</mat-checkbox>
 </div>
+
+<div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
 
 <div class="progressContainer">
   <mat-progress-bar class="progress-bar" mode="determinate"
