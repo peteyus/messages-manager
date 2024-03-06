@@ -8,12 +8,14 @@ describe('MessageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MessageComponent]
+      imports: [],
+      declarations: [MessageComponent]
     })
     .compileComponents();
     
     fixture = TestBed.createComponent(MessageComponent);
     component = fixture.componentInstance;
+    component.message = { sender: { displayName: 'Test' }};
     fixture.detectChanges();
   });
 
