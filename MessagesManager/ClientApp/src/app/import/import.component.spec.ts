@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ImportComponent } from './import.component';
-import { HttpClient, HttpErrorResponse, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { InjectionToken } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
