@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ErrorFileExceedsMaxAllowedSzie" xml:space="preserve">
+    <value>File '{0}' is larger than the maximum allowed size</value>
+    <comment>Required param: filePath</comment>
+  </data>
   <data name="ErrorFileNotFound" xml:space="preserve">
     <value>Error, file '{0}' not found.</value>
     <comment>Required param: filePath</comment>

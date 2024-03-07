@@ -44,6 +44,7 @@
             var sample = new MessageSample();
             sample.SampleMessage = this.ParseSingleMessageFromHtml(htmlDoc, metaOptions);
             sample.ParserConfiguration = metaOptions;
+            sample.ParseSuccessful = true;
 
             return sample;
         }

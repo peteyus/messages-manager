@@ -36,7 +36,8 @@
                 message = this.ProcessSingleMessage(messageNode);
             }
 
-            return new MessageSample { SampleMessage = message };
+            options ??= new MessageParserConfiguration { Parser = ParserType };
+            return new MessageSample { SampleMessage = message, ParserConfiguration = options };
         }
 
         public IEnumerable<Message> ReadMessages(string messageContent, MessageParserConfiguration? options = null)

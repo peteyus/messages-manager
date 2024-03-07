@@ -61,6 +61,15 @@ namespace Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File &apos;{0}&apos; is larger than the maximum allowed size.
+        /// </summary>
+        public static string ErrorFileExceedsMaxAllowedSzie {
+            get {
+                return ResourceManager.GetString("ErrorFileExceedsMaxAllowedSzie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error, file &apos;{0}&apos; not found..
         /// </summary>
         public static string ErrorFileNotFound {

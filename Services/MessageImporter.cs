@@ -16,7 +16,11 @@
         private readonly IParserDetector parserDetector;
         private readonly IMessageRepository repository;
 
-        public MessageImporter(IEnumerable<IMessageParser> parsers, IFileSystem fileSystem, IParserDetector parserDetector, IMessageRepository repository)
+        public MessageImporter(
+            IEnumerable<IMessageParser> parsers, 
+            IFileSystem fileSystem, 
+            IParserDetector parserDetector, 
+            IMessageRepository repository)
         {
             parsers.ThrowIfNull(nameof(parsers));
             fileSystem.ThrowIfNull(nameof(fileSystem));
@@ -56,6 +60,7 @@
             return conversation;
         }
 
+        // Front end will call for preview, then will call import once preview is successful.
         public MessageSample PreviewFileImport(string filePath, MessageParserConfiguration? configuration)
         {
             filePath.ThrowIfNullOrEmpty(nameof(filePath));

@@ -25,6 +25,8 @@ builder.Services.AddTransient<IMessageParser, FacebookHtmlParser>();
 builder.Services.AddTransient<IMessageParser, InstagramHtmlParser>();
 builder.Services.AddTransient<IMessageParser, FacebookJsonParser>();
 builder.Services.AddTransient<IMessageParser, InstagramJsonParser>();
+builder.Services.AddTransient<IMessageParser, ZipFileParser>();
+builder.Services.AddTransient<IUnzipService, UnzipService>();
 
 // Mappers
 builder.Services.AddTransient<IConversationMapper, ConversationMapper>();

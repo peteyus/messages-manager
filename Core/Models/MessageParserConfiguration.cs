@@ -4,6 +4,6 @@ namespace Core.Models
 {
     public class MessageParserConfiguration
     {
-        public MessageParsers Parser { get; set; }
+        public virtual MessageParsers Parser { get; set; }
     }
 }

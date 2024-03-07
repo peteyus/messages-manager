@@ -8,5 +8,6 @@
         InstagramJson,
         AppleSMS,
         AndroidSMS,
+        ZipFile
     }
 }
