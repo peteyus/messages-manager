@@ -10,7 +10,7 @@ namespace Services
     public class UnzipService : IUnzipService
     {
         // TODO PRJ: Make this configurable? Don't sweat it? Assumes 50% compression on a 10GB zip file which is pretty atypical anyway.
-        private const long MaxSize = 20L * 1024 * 1024 * 1024 * 1024;
+        private const long MaxSize = 20L * 1024 * 1024 * 1024;
         private readonly IFileSystem fileSystem;
 
         public UnzipService(IFileSystem fileSystem)
