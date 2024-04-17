@@ -4,7 +4,7 @@ namespace Core.Interfaces
 {
     public interface IUnzipService
     {
-        public Folder UnzipFile(string zipFilePath, string? destination = null);
+        public RootFolder UnzipFile(string zipFilePath, string? destination = null);
 
         /// <summary>
         /// Attempts to delete all temporary files this clsas has created.

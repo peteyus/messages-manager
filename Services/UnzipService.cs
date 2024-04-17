@@ -23,14 +23,16 @@ namespace Services
             this.fileSystem = fileSystem;
         }
 
-        public Folder UnzipFile(string zipFilePath, string? destination = null)
+        public RootFolder UnzipFile(string zipFilePath, string? destination = null)
         {
             this.CheckMaxUnzippedSize(zipFilePath);
 
             destination ??= GetTemporaryDirectory();
             ZipFile.ExtractToDirectory(zipFilePath, destination);
 
-            var structure = BuildDirectoryStructure(destination, true);
+            var structure = new RootFolder(BuildDirectoryStructure(destination, true));
+            structure.LocalPath = this.rootPath;
+            this.rootPath = "";
             return structure;
         }
 
@@ -95,7 +97,6 @@ namespace Services
         }
 
         // TODO PRJ: Protect against very large file structures? Can zips unzip symlinks?
-        // TODO PRJ: Returning full file paths... is this a problem? Maybe it's okay? - maybe but don't want that exposed
         private Folder BuildDirectoryStructure(string path, bool isRoot = false)
         {
             var root = new Folder();

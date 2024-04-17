@@ -10,7 +10,20 @@
 
         public string? Name { get; set; }
         public string? Path { get; set; }
-        public IList<Folder> Folders { get; }
-        public IList<File> Files { get; }
+        public List<Folder> Folders { get; }
+        public List<File> Files { get; }
+    }
+
+    public class RootFolder : Folder
+    {
+        public RootFolder(Folder clone)
+        {
+            this.Folders.AddRange(clone.Folders);
+            this.Files.AddRange(clone.Files);
+            this.Name = clone.Name;
+            this.Path = clone.Path;
+        }
+
+        public string? LocalPath { get; set; }
     }
 }
