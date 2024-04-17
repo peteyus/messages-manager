@@ -30,7 +30,7 @@
 
             var config = new MessageParserConfiguration();
             var extension = this.fileSystem.Path.GetExtension(filePath);
-            if (extension == "zip" || extension == "gz" || extension == "7z")
+            if (extension == ".zip" || extension == ".gz" || extension == ".7z")
             {
                 // need to handle zip files different - first we unzip, then we parse
                 // gzip and 7zip are probably a little extra. Focus on zip for now

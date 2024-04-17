@@ -1,0 +1,7 @@
+<p>{{folder.name}} folder:</p>
+<ul>
+    <app-import-preview-folder *ngFor="let sub of folder.folders" [folder]="sub"/>
+</ul>
+<ul *ngFor="let file of folder.files">
+    <li>{{file.name}}</li>
+</ul>

@@ -2,6 +2,7 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Http.Features;
 using Services;
 using Services.Data.Stores;
+using Services.Interfaces;
 using Services.Interfaces.Mappers;
 using Services.Mappers;
 using Services.Parsers;
@@ -12,7 +13,7 @@ const long TenGigs = 10L * 1024 * 1024 * 1024;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = TenGigs;
@@ -34,10 +35,15 @@ builder.Services.AddTransient<IPersonMapper, PersonMapper>();
 
 // DBContexts
 builder.Services.AddDbContext<SqliteContext>(); // TODO PRJ: How do we add / configure which context to use?
+builder.Services.AddTransient<IMessageContext, SqliteContext>();
 
 // Service Implementations
-//builder.Services.AddSingleton<IMessageImporter, MessageImporter>();
 builder.Services.AddTransient<IParserDetector, ParserDetector>();
+builder.Services.AddTransient<IMessageRepository, EntityFrameworkMessageRepository>();
+builder.Services.AddTransient<IMessageImporter, MessageImporter>();
+
+// hosted services
+builder.Services.AddHostedService<TempCleanupHostedService>();
 
 // Add session management support
 builder.Services.AddDistributedMemoryCache();

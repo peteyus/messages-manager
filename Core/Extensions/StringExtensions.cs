@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Core.Extensions
 {
@@ -9,7 +10,7 @@ namespace Core.Extensions
             return string.Format(CultureInfo.CurrentCulture, str, formatArguments);
         }
 
-        public static bool HasValue(this string? str)
+        public static bool HasValue([NotNullWhen(true)] this string? str)
         {
             return !string.IsNullOrWhiteSpace(str);
         }

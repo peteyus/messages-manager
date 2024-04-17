@@ -9,9 +9,13 @@ namespace Services
 {
     public class UnzipService : IUnzipService
     {
+        public static string UnzipPathPrefix = "peterjmessages";
+
         // TODO PRJ: Make this configurable? Don't sweat it? Assumes 50% compression on a 10GB zip file which is pretty atypical anyway.
         private const long MaxSize = 20L * 1024 * 1024 * 1024;
         private readonly IFileSystem fileSystem;
+
+        private string? rootPath;
 
         public UnzipService(IFileSystem fileSystem)
         {
@@ -26,7 +30,24 @@ namespace Services
             destination ??= GetTemporaryDirectory();
             ZipFile.ExtractToDirectory(zipFilePath, destination);
 
-            return BuildDirectoryStructure(destination);
+            var structure = BuildDirectoryStructure(destination, true);
+            return structure;
+        }
+
+        public async Task CleanUpTempFiles()
+        {
+            string tempDirectory = this.fileSystem.Path.Combine(
+                this.fileSystem.Path.GetTempPath(),
+                UnzipPathPrefix);
+            if (this.fileSystem.Path.Exists(tempDirectory))
+            {
+                try
+                {
+                    var directory = this.fileSystem.DirectoryInfo.New(tempDirectory);
+                    await Task.Run(() => directory.Delete(true));
+                }
+                catch { } // intentionally empty catch - if we can't clean it up, let the OS deal with it later.
+            }
         }
 
         private bool CheckMaxUnzippedSize(string zipFilePath)
@@ -59,6 +80,7 @@ namespace Services
         {
             string tempDirectory = this.fileSystem.Path.Combine(
                 this.fileSystem.Path.GetTempPath(),
+                UnzipPathPrefix,
                 this.fileSystem.Path.GetRandomFileName());
 
             if (this.fileSystem.Path.Exists(tempDirectory))
@@ -73,17 +95,20 @@ namespace Services
         }
 
         // TODO PRJ: Protect against very large file structures? Can zips unzip symlinks?
-        private Folder BuildDirectoryStructure(string path)
+        // TODO PRJ: Returning full file paths... is this a problem? Maybe it's okay? - maybe but don't want that exposed
+        private Folder BuildDirectoryStructure(string path, bool isRoot = false)
         {
-            var root = new Folder
+            var root = new Folder();
+            if (isRoot)
             {
-                Name = this.fileSystem.Path.GetDirectoryName(path),
-                Path = path
-            };
+                this.rootPath = this.fileSystem.Path.GetDirectoryName(path);
+            }
 
+            root.Name = this.fileSystem.Path.GetFileName(path); // GetFileName returns the last part of a path, in this case it will be the directory name.
+            root.Path = path.Replace(this.rootPath ?? string.Empty, string.Empty); // strip off rootPath if it's set. Only want to work with relative paths.
             foreach (var directory in this.fileSystem.Directory.GetDirectories(path))
             {
-                root.Folders.Add(this.BuildDirectoryStructure(directory));
+                root.Folders.Add(this.BuildDirectoryStructure(directory, false));
             }
 
             foreach (var file in this.fileSystem.Directory.GetFiles(path))
@@ -92,7 +117,7 @@ namespace Services
                 root.Files.Add(new Core.Models.Application.File
                 {
                     Name = info.Name,
-                    Path = info.FullName,
+                    Path = info.FullName.Replace(this.rootPath ?? string.Empty, string.Empty),
                     Size = info.Length
                 });
             }

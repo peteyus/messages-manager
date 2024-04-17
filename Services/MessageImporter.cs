@@ -70,7 +70,7 @@
 
             var parser = this.GetParser(config);
 
-            return parser.ConfigureParsingAndReturnSample(filePath);
+            return parser.ConfigureParsingAndReturnSample(filePath, config);
         }
 
         private MessageParserConfiguration DetectConfigForFile(string filePath)

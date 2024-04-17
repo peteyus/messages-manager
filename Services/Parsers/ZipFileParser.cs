@@ -20,7 +20,7 @@ namespace Services.Parsers
                 throw new InvalidCastException("The configuration for zip files must be a zip config.");
             }
 
-            return new MessageSample { ParserConfiguration = zipConfiguration };
+             return new MessageSample { ParserConfiguration = zipConfiguration, ParseSuccessful = true };
         }
 
         public IEnumerable<Message> ReadMessages(string messageContent, MessageParserConfiguration? options = null)

@@ -20,6 +20,6 @@ namespace Core.Interfaces
         /// <param name="configuration">Optional configuration to specify which parser to use. If not provided, best guess will be applied.</param>
         /// <param name="conversationId">If provided, it will link the messages to an existing conversation.</param>
         /// <returns>A <see cref="Conversation"/> on success with the Id populated for detailed querying</returns>
-        Conversation ImportConversationFromFile(string filePath, MessageParserConfiguration? configuration, int? conversationId);
+        Conversation ImportConversationFromFile(string filePath, MessageParserConfiguration? configuration = null, int? conversationId = null);
     }
 }

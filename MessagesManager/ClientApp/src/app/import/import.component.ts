@@ -1,6 +1,9 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, Input, Inject } from '@angular/core';
-import { Subscription, finalize } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription, finalize, map } from 'rxjs';
+import { FileNameResult } from 'src/shared/models/filenameresult';
+import { ParserConfiguration } from 'src/shared/models/parserconfiguration';
 
 @Component({
   selector: 'app-import',
@@ -13,9 +16,10 @@ export class ImportComponent {
   uploadProgress: number;
   overwrite: boolean = false;
   uploadSub: Subscription;
+  importSub: Subscription;
   errorMessage: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private router: Router) { }
   
   onFileSelected(event) {
     const file:File = event.target.files[0];
@@ -27,7 +31,7 @@ export class ImportComponent {
         formData.append("sessionId", localStorage.getItem("sessionId"));
         formData.append("overwrite", this.overwrite.toString());
 
-        const upload$ = this.http.post(`${this.baseUrl}api/import/uploadfile`, formData, {
+        const upload$ = this.http.post<FileNameResult>(`${this.baseUrl}api/import/uploadfile`, formData, {
             reportProgress: true,
             observe: 'events'
         })
@@ -42,6 +46,9 @@ export class ImportComponent {
           if (event.type == HttpEventType.Response) {
             if (!event.ok) {
               this.errorMessage = `${event.body}`;
+            }
+            else {
+              this.callImport(event.body.fileName);
             }
           }
           if (event.type == HttpEventType.ResponseHeader) {
@@ -61,5 +68,35 @@ export class ImportComponent {
   reset() {
     this.uploadProgress = null;
     this.uploadSub = null;
+  }
+
+  resetImport() {
+    this.importSub.unsubscribe();
+    this.importSub = null;
+  }
+
+  // TODO PRJ: It needs the session here.
+  callImport(filePath: string) {
+    const url = `${this.baseUrl}api/import/PreviewImportFile`;
+    
+    const formData = new FormData();
+    formData.append("filePath", filePath);
+    formData.append("sessionId", localStorage.getItem("sessionId"));
+    const import$ = this.http.post<ParserConfiguration>(
+      url, 
+      formData,
+      { observe: 'events' }).pipe(
+        // map(preview => this.router.navigateByUrl('/import/preview', { state: preview }), 
+        finalize(() => this.resetImport()));
+    this.importSub = import$.subscribe(event => {
+      if (event.type == HttpEventType.Response) {
+        if (!event.ok) {
+          this.errorMessage = `${event.body}`;
+        }
+        else {
+          this.router.navigateByUrl('/import/preview', { state: event.body });
+        }
+      }
+    });
   }
 }
