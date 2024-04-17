@@ -1,4 +1,4 @@
-<div (click)="folder.expanded = !folder.expanded"><mat-icon>folder</mat-icon> {{ folder.name }}</div>
+<button mat-button (click)="folder.expanded = !folder.expanded"><mat-icon>folder</mat-icon> {{ folder.name }}</button>
 <ul *ngIf="folder.expanded">
     <app-import-preview-folder *ngFor="let sub of folder.folders" [folder]="sub"/>
     <ul *ngFor="let file of folder.files">

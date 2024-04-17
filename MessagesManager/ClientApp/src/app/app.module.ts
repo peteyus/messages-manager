@@ -18,6 +18,7 @@ import { MessageComponent } from './conversations/messages/message.component';
 import { initializeSession } from './providers/sessionInitializer';
 import { ImportPreviewComponent } from './import-preview/import-preview.component';
 import { ImportPreviewFolderComponent } from './import-preview-folder/import-preview-folder.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ImportPreviewFolderComponent } from './import-preview-folder/import-pre
     MatCheckboxModule
   ],
   providers: [
-    { provide: APP_INITIALIZER, useFactory: initializeSession, multi: true }
+    { provide: APP_INITIALIZER, useFactory: initializeSession, multi: true },
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
