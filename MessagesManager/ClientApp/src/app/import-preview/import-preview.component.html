@@ -1,12 +1,10 @@
 <div *ngIf="sample else borked">
-    <p *ngIf="sample.parseSuccessful">File Parsed okay</p>
     <div *ngIf="sample.parser == 6">
         <p>Zip file detected</p>
-        <p>{{sample.parserConfiguration.folder.name}} is root level folder name</p>
+        <p>Select first message file in series:</p>
         <app-import-preview-folder [folder]="sample.parserConfiguration.folder"/>
     </div>
 </div>
-<p>There should be SOMETHING above this.</p>
 
 <ng-template #borked>
     <p>should not see me if you see object below.</p>

@@ -5,4 +5,5 @@ export interface Folder {
     path: string;
     folders: Folder[];
     files: File[];
+    expanded: boolean;
 }

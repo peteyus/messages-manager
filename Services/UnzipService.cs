@@ -100,12 +100,14 @@ namespace Services
         private Folder BuildDirectoryStructure(string path, bool isRoot = false)
         {
             var root = new Folder();
+            root.Name = this.fileSystem.Path.GetFileName(path); // GetFileName returns the last part of a path, in this case it will be the directory name.
+
             if (isRoot)
             {
                 this.rootPath = this.fileSystem.Path.GetDirectoryName(path);
+                root.Name = "(Root folder)";
             }
 
-            root.Name = this.fileSystem.Path.GetFileName(path); // GetFileName returns the last part of a path, in this case it will be the directory name.
             root.Path = path.Replace(this.rootPath ?? string.Empty, string.Empty); // strip off rootPath if it's set. Only want to work with relative paths.
             foreach (var directory in this.fileSystem.Directory.GetDirectories(path))
             {
