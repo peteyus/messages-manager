@@ -25,7 +25,7 @@
     "@angular/platform-browser-dynamic": "^17.2.3",
     "@angular/platform-server": "^17.2.3",
     "@angular/router": "^17.2.3",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.0",
     "jquery": "^3.6.4",
     "material-icons": "^1.13.12",
     "oidc-client": "^1.11.5",

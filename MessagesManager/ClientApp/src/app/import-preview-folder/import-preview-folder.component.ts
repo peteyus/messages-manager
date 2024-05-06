@@ -9,4 +9,8 @@ import { File } from 'src/shared/models/file';
 })
 export class ImportPreviewFolderComponent {
   @Input() folder: Folder;
+
+  updateFileSelected() {
+    // TODO: Update event service with selected file
+  }
 }

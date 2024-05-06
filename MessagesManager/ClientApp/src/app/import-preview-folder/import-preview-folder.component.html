@@ -1,7 +1,15 @@
-<button mat-button (click)="folder.expanded = !folder.expanded"><mat-icon>folder</mat-icon> {{ folder.name }}</button>
+<li><button mat-flat-button color="primary" (click)="folder.expanded = !folder.expanded"><mat-icon>folder</mat-icon> {{ folder.name }}</button></li>
 <ul *ngIf="folder.expanded">
     <app-import-preview-folder *ngFor="let sub of folder.folders" [folder]="sub"/>
-    <ul *ngFor="let file of folder.files">
-        <li>{{file.name}}</li>
+    <ul>
+        @for (file of folder.files; track file) {
+        <li>
+            <mat-checkbox color="accent"
+                          [(ngModel)]="file.selected" 
+                          (ngModelChange)="updateFileSelected()">
+                {{file.name}}
+            </mat-checkbox>
+        </li>
+        }
     </ul>
 </ul>
