@@ -8,23 +8,47 @@ namespace Services.Indexing
 {
     public class ElsaticIndexer : IIndexer
     {
+        private readonly ElasticsearchClient client;
+        private readonly ApplicationConfiguration config;
+
         public ElsaticIndexer(ApplicationConfiguration config)
         {
-            if (config?.Elastic?.ApiUrl == null || config?.Elastic?.ApiKey == null)
+            this.config = config;
+
+            // TODO PRJ: Build this earlier?
+            var searchConfig = new ElasticsearchClientSettings(new Uri(config.Elastic.ApiUrl))
+                .Authentication(new ApiKey(config.Elastic.ApiKey))
+                .DefaultIndex(config.Elastic.IndexName);
+
+            this.client = new ElasticsearchClient(searchConfig);
+        }
+
+        public async Task IndexMessage(Message message, CancellationToken cancellationToken)
+        {
+            await this.client.IndexAsync(message, cancellationToken);
+        }
+
+        public async Task<IEnumerable<Message>> SearchMessages(string searchString, CancellationToken cancellationToken)
+        {
+            var response = await this.client.SearchAsync<Message>(search => search
+            .Index(config.Elastic.IndexName)
+            .From(0)
+            .Size(10) // TODO PRJ: Configurable? Pass in? Think about this one.
+            .Query(query => query
+                .Match(match => match.Query(searchString))
+             ),
+             cancellationToken);
+
+            return response.Documents;
+        }
+
+        public async Task InitializeIndex(CancellationToken cancellationToken)
+        {
+            var indexExists = await this.client.Indices.ExistsAsync(config.Elastic.IndexName, cancellationToken);
+            if (!indexExists.Exists)
             {
-                throw new ArgumentNullException(nameof(config));
+                await this.client.Indices.CreateAsync<Message>(config.Elastic.IndexName, cancellationToken);
             }
-
-            var client = new ElasticsearchClient(config.Elastic.ApiUrl, new ApiKey(config.Elastic.ApiKey));
-        }
-        public void IndexMessage(Message message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Message> SearchMessages(string searchString)
-        {
-            throw new NotImplementedException();
         }
     }
 }
