@@ -1,4 +1,5 @@
 using Core.Interfaces;
+using Core.Models.Application;
 using Microsoft.AspNetCore.Http.Features;
 using Services;
 using Services.Data.Stores;
@@ -58,6 +59,14 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Limits.MaxRequestBodySize = TenGigs;
 });
+
+var config = new ApplicationConfiguration();
+var elastic = new ElasticConfiguration();
+builder.Configuration.GetSection("Elastic").Bind(elastic);
+builder.Configuration.Bind(config);
+config.Elastic = elastic;
+
+builder.Services.AddSingleton<ApplicationConfiguration>(config);
 
 var app = builder.Build();
 
