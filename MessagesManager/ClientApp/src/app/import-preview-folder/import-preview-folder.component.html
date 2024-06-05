@@ -6,7 +6,7 @@
         <li>
             <mat-checkbox color="accent"
                           [(ngModel)]="file.selected" 
-                          (ngModelChange)="updateFileSelected()">
+                          (ngModelChange)="updateFileSelected(file)">
                 {{file.name}}
             </mat-checkbox>
         </li>
