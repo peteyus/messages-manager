@@ -61,10 +61,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 });
 
 var config = new ApplicationConfiguration();
-var elastic = new ElasticConfiguration();
-builder.Configuration.GetSection("Elastic").Bind(elastic);
 builder.Configuration.Bind(config);
-config.Elastic = elastic;
 
 builder.Services.AddSingleton<ApplicationConfiguration>(config);
 
