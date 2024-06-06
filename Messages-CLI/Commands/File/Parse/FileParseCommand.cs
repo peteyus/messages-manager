@@ -48,7 +48,8 @@ namespace Messages.CLI.Commands.File.Parse
             }
 
             var parser = _parserDetector.GetParser(parserType);
-            var conversation = parser.ReadMessagesFromFile(file.FullName);
+            var sample = parser.ConfigureParsingAndReturnSample(file.FullName);
+            var conversation = parser.ReadMessagesFromFile(file.FullName, sample.ParserConfiguration);
 
             return Task.CompletedTask;
         }
