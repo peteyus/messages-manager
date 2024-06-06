@@ -1,21 +1,24 @@
 ﻿namespace Services
 {
+    using Core;
+    using Core.Enums;
     using Core.Extensions;
     using Core.Interfaces;
     using Core.Models;
     using System.IO.Abstractions;
-    using System.IO.Compression;
 
     public class ParserDetector : IParserDetector
     {
+        private readonly IEnumerable<IMessageParser> parsers;
         private readonly IFileSystem fileSystem;
         private readonly IUnzipService unzipService;
 
-        public ParserDetector(IFileSystem fileSystem, IUnzipService unzipService)
+        public ParserDetector(
+            IEnumerable<IMessageParser> parsers, 
+            IFileSystem fileSystem, 
+            IUnzipService unzipService)
         {
-            fileSystem.ThrowIfNull(nameof(fileSystem));
-            unzipService.ThrowIfNull(nameof(unzipService));
-
+            this.parsers = parsers;
             this.fileSystem = fileSystem;
             this.unzipService = unzipService;
         }
@@ -43,19 +46,40 @@
                 switch (extension)
                 {
                     case "html":
-                        config.Parser = Core.Enums.MessageParsers.InstagramHtml;
+                        config.Parser = MessageParsers.InstagramHtml;
                         break;
                     case "json":
                     case "txt":
                     case "":
-                        config.Parser = Core.Enums.MessageParsers.InstagramJson;
+                        config.Parser = MessageParsers.InstagramJson;
                         break;
                     default:
-                        throw new InvalidCastException(Core.Strings.ErrorUnknownFileFormat.FormatCurrentCulture(filePath));
+                        throw new InvalidCastException(Strings.ErrorUnknownFileFormat.FormatCurrentCulture(filePath));
                 }
             }
             return config;
         }
-        
+
+        public IMessageParser GetParser(MessageParserConfiguration config)
+        {
+            var parser = this.parsers.FirstOrDefault(p => p.ParserType == config.Parser);
+            if (parser == null)
+            {
+                throw new Exception(Strings.ErrorParserNotFound.FormatCurrentCulture(Enum.GetName(config.Parser) ?? config.Parser.ToString()));
+            }
+
+            return parser;
+        }
+
+        public IMessageParser GetParser(MessageParsers parserType)
+        {
+            var parser = this.parsers.FirstOrDefault(p => p.ParserType == parserType);
+            if (parser == null)
+            {
+                throw new Exception(Strings.ErrorParserNotFound.FormatCurrentCulture(Enum.GetName(parserType) ?? parserType.ToString()));
+            }
+
+            return parser;
+        }
     }
 }
