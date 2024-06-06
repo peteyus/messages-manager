@@ -3,6 +3,7 @@ using Core.Models;
 using Core.Models.Application;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
+using System.Net;
 
 namespace Services.Indexing
 {
@@ -18,7 +19,8 @@ namespace Services.Indexing
             // TODO PRJ: Build this earlier?
             var searchConfig = new ElasticsearchClientSettings(new Uri(config.Elastic.ApiUrl))
                 .Authentication(new ApiKey(config.Elastic.ApiKey))
-                .DefaultIndex(config.Elastic.IndexName);
+                .DefaultIndex(config.Elastic.IndexName)
+                .ServerCertificateValidationCallback((a, b, c, d) => true);
 
             this.client = new ElasticsearchClient(searchConfig);
         }
@@ -47,7 +49,11 @@ namespace Services.Indexing
             var indexExists = await this.client.Indices.ExistsAsync(config.Elastic.IndexName, cancellationToken);
             if (!indexExists.Exists)
             {
-                await this.client.Indices.CreateAsync<Message>(config.Elastic.IndexName, cancellationToken);
+                var createResponse = await this.client.Indices.CreateAsync<Message>(config.Elastic.IndexName, cancellationToken);
+                if (!createResponse.IsSuccess())
+                {
+                    throw new Exception(createResponse.DebugInformation);
+                }
             }
         }
     }
