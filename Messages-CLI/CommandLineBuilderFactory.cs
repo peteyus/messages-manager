@@ -21,6 +21,7 @@
         {
             var rootCommand = new RootCommand("Messages Manager command-line interface.");
 
+            // Query services for all types that implement BaseCommand and add them to rootCommand.
             var commandsToAdd = this.serviceProvider.GetServices<BaseCommand>().ToList();
 
             // Sort commands alphabetically for help text

@@ -11,6 +11,9 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Core.Models.Application;
 using Messages.CLI.Interfaces;
+using Messages.CLI.Commands;
+using System.CommandLine.IO;
+using System.Net;
 
 namespace Messages.CLI
 {
@@ -27,6 +30,10 @@ namespace Messages.CLI
 
             serviceCollection.AddSingleton(config);
             serviceCollection.AddSingleton(appConfig);
+
+            // disable validation of HTTPS certs. This is terrible and hacky but eh.
+            // TODO PRJ: THIS SHOULD NOT BE RELEASED.
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, errors) => true;
         }
 
         public static void RegisterServices(this IServiceCollection serviceCollection)
@@ -36,6 +43,7 @@ namespace Messages.CLI
             serviceCollection.AddSingleton<ICommandLineBuilderInvoker, CommandLineBuilderInvoker>();
 
             serviceCollection.AddSingleton<IFileSystem, FileSystem>();
+            serviceCollection.AddSingleton<IConsole, SystemConsole>();
             serviceCollection.AddSingleton<IIndexer, ElsaticIndexer>();
             serviceCollection.AddTransient<IMessageParser, FacebookHtmlParser>();
             serviceCollection.AddTransient<IMessageParser, InstagramHtmlParser>();
@@ -43,6 +51,7 @@ namespace Messages.CLI
             serviceCollection.AddTransient<IMessageParser, InstagramJsonParser>();
             serviceCollection.AddTransient<IMessageParser, ZipFileParser>();
             serviceCollection.AddSingleton<IUnzipService, UnzipService>();
+            serviceCollection.AddSingleton<IParserDetector, ParserDetector>();
         }
 
         public static void RegisterCommands(this IServiceCollection serviceCollection)
@@ -62,6 +71,11 @@ namespace Messages.CLI
 
                 // We also need to add a registration for concrete types
                 serviceCollection.AddSingleton(pluginType);
+
+                if (typeof(BaseCommand).IsAssignableFrom(pluginType))
+                {
+                    serviceCollection.AddSingleton(typeof(BaseCommand), pluginType);
+                }
             }
         }
 
